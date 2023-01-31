@@ -7,29 +7,32 @@ import Messages from './components/Messages';
 import { SingleListing } from './components/SingleListing';
 import { Listings } from './components/Listings';
 import { NavBar } from './components/NavBar';
+import { Documents } from './components/Documents';
+
 
 
 const App = () => {
   return (
+    
     <>
       <NavBar/>
-         <Routes>
-            <Route path = '/' element={<Home/>} exact/>
-            <Route path = '/login' element={<Login />}/>
-            <Route path = '/about' element={<About />}/>
-            <Route path = '/messaging' element={< Messages/>}/>
-            <Route path = '/listings' element={<Listings />}/>
-            <Route path = '/singlelisting' element={<SingleListing />}/>
-            <Route path = '/uploadTest' element={<UploadTest />}/>
+        <Routes>
+          <Route path = '/' element={<Home/>} exact/>
+          <Route path = '/login' element={<Login />}/>
+          <Route path = '/about' element={<About />}/>
+          <Route path = '/messaging' element={< Messages/>}/>
+          <Route path = '/listings' element={<Listings />}/>
+          <Route path = '/singlelisting' element={<SingleListing />}/>
+          <Route path = '/documents' element={<Documents />}/>
         </Routes>
-    
-    </>
       
-       
-       
-        
-    
+      
+    </>   
   )
 }
+
+
+
+
 
 export default App
