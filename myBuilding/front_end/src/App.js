@@ -8,7 +8,7 @@ import { SingleListing } from './pages/SingleListing';
 import { Listings } from './pages/Listings';
 import { NavBar } from './pages/NavBar';
 import { Documents } from './pages/Documents';
-
+import "./style.scss";
 
 
 const App = () => {
