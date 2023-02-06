@@ -38,12 +38,13 @@ export const Documents = () => {
     userSelect: 'text'
   }
 
+  //Stores images that are selected
   const handleImageSelect = (event) => {
     console.log('Image selected!');
     setSelectedImage(event.target.src.slice(83, 139));
   }
 
-
+  //Displays all images in the database at the stat
   useEffect(() => {
     listAll(imageListRef).then((response) => {
       response.items.forEach((item) => {
