@@ -9,6 +9,8 @@ export const Documents = () => {
   const [imageList, setImageList] = useState([])
   const imageListRef = ref(storage, "images/")
 
+  const [selectedImage, setSelectedImage] = React.useState(null);
+
   const uploadImage = () => {
     if (imageUpload == null) return
     const imageRef = ref(storage, `images/${imageUpload.name + v4()}`)
@@ -19,6 +21,16 @@ export const Documents = () => {
       
     })
   }
+
+  const selectableImageStyles = {
+    userSelect: 'text'
+  };
+
+  const handleImageSelect = (event) => {
+    console.log('Image selected!');
+    const selectedImagePart = event.target.src.match(/[^\/]+$/)[0];
+    setSelectedImage(selectedImagePart);
+  };
 
   useEffect(() => {
     listAll(imageListRef).then((response) => {
@@ -31,6 +43,8 @@ export const Documents = () => {
   }, [])
 
   return (
+    
+
     <div className = "App">
     <input type = "file" onChange={
       (event) => {
@@ -39,8 +53,10 @@ export const Documents = () => {
     />
     <button onClick={uploadImage}>Upload Image</button>
     {imageList.map((url) => {
-      return <img src={url}/>
+      return <img src={url} style={selectableImageStyles} onMouseUp={handleImageSelect}/>
     })}
+
+    {selectedImage && <p>Selected Image: {selectedImage}</p>}
     </div>
     
   )
