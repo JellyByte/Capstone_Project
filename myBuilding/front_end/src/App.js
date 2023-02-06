@@ -1,13 +1,13 @@
 import React from 'react';
 import { Routes, Route, useNavigate, BrowserRouter as Router} from 'react-router-dom';
-import { Login } from './components/Login';
-import { Home } from './components/Home';
-import { About } from './components/About';
-import Messages from './components/Messages';
-import { SingleListing } from './components/SingleListing';
-import { Listings } from './components/Listings';
-import { NavBar } from './components/NavBar';
-import { Documents } from './components/Documents';
+import { Login } from './pages/Login';
+import { Home } from './pages/Home';
+import { About } from './pages/About';
+import Messages from './pages/Messages';
+import { SingleListing } from './pages/SingleListing';
+import { Listings } from './pages/Listings';
+import { NavBar } from './pages/NavBar';
+import { Documents } from './pages/Documents';
 
 
 
