@@ -21,7 +21,7 @@
     .messageNavbar{
       display: flex;
       align-items: center;
-      background-color: #4d7784;
+      background-color: #006c8d;
       height: 50px;
       padding: 10px;
       justify-content: space-between ;
@@ -105,7 +105,7 @@
     flex: 2;
     .chatInfo{
       height: 50px;
-      background-color: #5b8d8c;
+      background-color: #006c8d;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -114,7 +114,7 @@
     }
 
     .texts{
-      background-color: lightgrey;
+      background-color: rgb(231, 244, 250);
       padding: 10px;
       height: calc(100% - 100px);
       overflow: scroll;
@@ -205,7 +205,7 @@
           border: none;
           padding: 10px 15px;
           color: white;
-          background-color: #5b8d8c;
+          background-color: #4a7380;
           cursor: pointer;
         }
     }
