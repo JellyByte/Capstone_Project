@@ -12,7 +12,8 @@ export const NavBar = () => {
           <NavLink to="/listings" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Listings</NavLink>
           <NavLink to="/messaging" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Messages</NavLink>
           <NavLink to="/about" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> About</NavLink>
-          <NavLink to="/documents" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Documents </NavLink>          
+          <NavLink to="/documents" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Documents </NavLink>
+          <NavLink to="/upload" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Upload </NavLink>          
         </nav>
       </div>
     </header>

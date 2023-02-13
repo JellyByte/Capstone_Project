@@ -8,6 +8,7 @@ import { SingleListing } from './pages/SingleListing';
 import { Listings } from './pages/Listings';
 import { NavBar } from './pages/NavBar';
 import { Documents } from './pages/Documents';
+import { Upload } from './pages/Upload';
 import "./style.scss";
 
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path = '/listings' element={<Listings />}/>
           <Route path = '/singlelisting' element={<SingleListing />}/>
           <Route path = '/documents' element={<Documents />}/>
+          <Route path = '/upload' element={<Upload />}/>
         </Routes>
       
       
