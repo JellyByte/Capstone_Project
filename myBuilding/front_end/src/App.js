@@ -10,6 +10,7 @@ import { NavBar } from './pages/NavBar';
 import { Documents } from './pages/Documents';
 import { Upload } from './pages/Upload';
 import "./style.scss";
+import { AddAppartment } from './pages/AddAppartments';
 
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
           <Route path = '/singlelisting' element={<SingleListing />}/>
           <Route path = '/documents' element={<Documents />}/>
           <Route path = '/upload' element={<Upload />}/>
+          <Route path = '/addAppartments' element={<AddAppartment />}/>
         </Routes>
       
       

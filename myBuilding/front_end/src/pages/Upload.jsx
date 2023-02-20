@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import * as firebase from "../firebase";
-import "firebase/storage";
+import {storage} from "../firebase";
+import { ref } from "firebase/storage";
 import { v4 } from "uuid";
+import { uploadBytes } from 'firebase/storage';
 
 export const Upload = () => {
   const [stream, setStream] = useState(null);
@@ -35,27 +36,25 @@ export const Upload = () => {
     setCapturedImage(canvas.toDataURL('image/jpeg'));
   };
 
-  const uploadToFirebase = () => {
-    const storageRef = firebase.storage().ref();
-    const imageRef = storageRef.child(`images/${new Date().getTime()}.jpeg`);
-    const uploadTask = imageRef.putString(capturedImage, 'data_url');
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) => {
-        console.log(snapshot);
-      },
-      (error) => {
-        console.error(error);
-      },
-      () => {
-        console.log('Uploaded a blob or file!');
-      });
-  };
+  const upload = () => {
+    const base64 = capturedImage.split(',')[1];
+    const raw = window.atob(base64);
+    const rawLength = raw.length;
+    const array = new Uint8Array(new ArrayBuffer(rawLength));
+  
+    for (let i = 0; i < rawLength; i++) {
+      array[i] = raw.charCodeAt(i);
+    }
+  
+    const imageRef = ref(storage, `images/${v4()}`)
+    uploadBytes(imageRef, array.buffer)
+  }
 
   return (
     <div>
-      <button onClick={toggleWebcam}>
+                      {/* <button onClick={toggleWebcam}>
         {isWebcamEnabled ? 'Stop Webcam' : 'Start Webcam'}
-      </button>
+      </button>      */}
       {isWebcamEnabled && (
         <div>
           <video id="webcam" ref={webcamRef} autoPlay playsInline width={640} height={480} />
@@ -65,7 +64,7 @@ export const Upload = () => {
       {capturedImage && (
         <div>
           <img src={capturedImage} alt="Captured" />
-          <button onClick={uploadToFirebase}>Upload</button>
+          <button onClick={upload}>Upload</button>
         </div>
       )}
     </div>
