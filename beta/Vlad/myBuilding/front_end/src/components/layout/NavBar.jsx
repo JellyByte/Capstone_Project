@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SignedLinks from './SignedLinks'
 import SignedOutLinks from './SignedOutLinks'
-import { NavLink } from 'react-router-dom';
+import { Navigate, NavLink } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
-import {useAuthState} from 'react-firebase-hooks/auth'
-import{auth} from "../../firebase-config"
+
 
 
 
@@ -12,7 +13,17 @@ import{auth} from "../../firebase-config"
 
 
  const NavBar = () => {
-    const [user]= useAuthState(auth)
+    //const [user]= useAuthState(auth)
+
+    const { currentUser } = useContext(AuthContext);
+
+    const ProtectedRoute = ({ children }) => {
+      if (!currentUser) {
+        return <Navigate to="/login" />;
+      }
+  
+      return children
+    };
 
 
 
@@ -23,8 +34,11 @@ import{auth} from "../../firebase-config"
         <div className='container mx-auto flex justify-between'>
             <NavLink to="/" className='text-emerald-300 text-2xl font-medium mr-4'> myBuilding</NavLink>
             <nav className='flex'>
+              <ProtectedRoute>
+                <SignedLinks />
+              </ProtectedRoute>
+                <SignedOutLinks/>
             
-               { user ? <SignedLinks />:<SignedOutLinks/>}
               
            
 

@@ -10,6 +10,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import {useAuthState} from 'react-firebase-hooks/auth'
 import { Login } from './components/common/Login';
 import { Register } from './components/common/Register';
+import { AuthContext } from './context/AuthContext';
+import { useContext } from 'react';
+import { AuthContextProvider } from "./context/AuthContext";
+
 
 
 //const authentication = getAuth();
@@ -25,7 +29,7 @@ const App = () => {
 
 
 
-  const[user] = useAuthState(auth);
+  //const { currentUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -78,7 +82,13 @@ const App = () => {
       
     <>
     <ToastContainer/>
-      <NavBar user={user} />
+
+    <AuthContextProvider>
+
+      <NavBar  />
+    </AuthContextProvider>
+      
+    
          <Routes>
          <Route path = "/">
             <Route 

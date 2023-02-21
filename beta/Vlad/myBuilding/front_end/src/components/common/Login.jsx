@@ -1,12 +1,50 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import { signInWithEmailAndPassword} from 'firebase/auth'
+import { auth } from '../../firebase-config';
+import { useNavigate } from 'react-router-dom';
+ 
 export const Login = () => {
+
+
+  const [err,setErr] = useState(false);
+
+  const navigate= useNavigate();
+  
+  const handleSubmit = async (e)=>{
+    e.preventDefault();
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+    console.log(email);
+
+    console.log(password);
+
+
+    try{
+     await signInWithEmailAndPassword(auth, email, password)
+     navigate('/profile')
+    
+       
+
+
+    }catch(err){
+        setErr(true);
+
+
+
+    }
+
+     
+
+  };//end of handle submit
+
+
+
   return (
     <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mx-auto max-w-lg">
    
   
-      <form action="  " class="mt-6 mb-0 space-y-4 rounded-lg p-8 shadow-2xl">
+      <form onSubmit={handleSubmit} class="mt-6 mb-0 space-y-4 rounded-lg p-8 shadow-2xl">
         <p class="flex justify-center text-lg font-medium">Login</p>
 
     
@@ -88,6 +126,7 @@ export const Login = () => {
         >
           Sign in
         </button>
+        {err && <span>something went wrong</span>}
   
         <p class="text-center text-sm text-gray-500">
           No account?
