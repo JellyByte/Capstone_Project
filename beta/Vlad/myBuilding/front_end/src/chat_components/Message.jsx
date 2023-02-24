@@ -18,13 +18,16 @@ export const Message = ({message}) => {
   const date = (message.date).toDate();
   const timeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   console.log(timeString);
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [message]);
 
 
   return (
 
 
 
-      <div  className={`font-mono flex gap-5 p-2 ${isOwner ? 'flex-row-reverse' : ''}`}>
+      <div  ref = {ref}className={`font-mono flex gap-5 p-2 ${isOwner ? 'flex-row-reverse' : ''}`}>
           <div  className={`flex flex-col text-cyan-700 mb-5 ${isOwner ? '' : 'justify-start'}`}>
               <img className='w-12 h-12 rounded-full object-cover' src ={whichUser.photoURL}></img>
               <span className='text-sm font-normal'>{timeString}</span>

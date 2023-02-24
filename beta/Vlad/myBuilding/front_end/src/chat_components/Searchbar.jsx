@@ -88,9 +88,9 @@ export const Searchbar = () => {
 
   return (
     <div className="border-b-2 border-emerald-300/50">    {/*search */}
-        <div className="flex justify-center m-1 pb-2 ">
-            <div className=" xl:w-96">
-                <div className="input-group relative w-full ">
+        <div className="flex justify-start m-1 ">
+            
+                <div className="input-group relative w-full flex flex-row items-center gap-2 ">
                     <input 
                             type="text" 
                             className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
@@ -100,8 +100,14 @@ export const Searchbar = () => {
                             value={username}
                             onKeyDown={handleKeyDown}
                         />
+                        <div className='flex flex-col'>
+
+                            <img class="bg-black h-10 w-10 rounded-sm overflow-hidden object-cover" src={currentUser.photoURL} alt="Profile picture"/>
+                            <span class="font-mono text-sm">{currentUser.displayName}</span>
+
+                        </div>
                 </div>
-            </div>
+           
         </div>
             {err&& <span>user not found</span>}
 

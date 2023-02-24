@@ -105,7 +105,7 @@ export const Input = () => {
     
   
   return (
-    <div className='h-1/6 p-2.5   font-mono'>
+    <div className='h-1/6 p-2.5  font-mono'>
 
 
        
