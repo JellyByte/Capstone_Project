@@ -13,18 +13,12 @@ import { AuthContext } from '../../context/AuthContext';
 
 
  const NavBar = () => {
-    //const [user]= useAuthState(auth)
+  const { currentUser } = useContext(AuthContext);
 
-    const { currentUser } = useContext(AuthContext);
 
-    const ProtectedRoute = ({ children }) => {
-      if (!currentUser) {
-        return <Navigate to="/login" />;
-      }
   
-      return children
-    };
 
+    
 
 
 
@@ -34,10 +28,12 @@ import { AuthContext } from '../../context/AuthContext';
         <div className='container mx-auto flex justify-between'>
             <NavLink to="/" className='text-emerald-300 text-2xl font-medium mr-4'> myBuilding</NavLink>
             <nav className='flex'>
-              <ProtectedRoute>
-                <SignedLinks />
-              </ProtectedRoute>
-                <SignedOutLinks/>
+                {
+                  currentUser? <SignedLinks />
+                  :<SignedOutLinks/>
+
+                  
+                }
             
               
            

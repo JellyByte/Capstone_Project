@@ -6,10 +6,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 export const Listings = () => {
 
   let navigate = useNavigate();
-  const[user] = useAuthState(auth)
-  useEffect(() => {
-   user ? navigate('/listings'):navigate('/login')
-  }, [])
+  //const[user] = useAuthState(auth)
+  // useEffect(() => {
+  //  user ? navigate('/listings'):navigate('/login')
+  // }, [])
   
   
   return (
