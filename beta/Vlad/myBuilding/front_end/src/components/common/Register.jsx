@@ -10,7 +10,7 @@ import {
   getDownloadURL } from "firebase/storage";
 
 
-  import { useNavigate } from 'react-router-dom';
+  import { useNavigate, Link} from 'react-router-dom';
 
   import add from "../../chat_components/img/add.png"
 
@@ -190,9 +190,8 @@ export const Register = () => {
         {err && <span>something went wrong</span>}
   
         <p className="text-center text-sm text-gray-500">
-          No account?
-          <a className="underline" >Sign up</a>
-        </p>
+          Already have an account? <Link to="/Login" className="underline text-blue-500 text-lg hover:text-red-500">Login</Link>
+          </p>
       </form>
     </div>
   </div>

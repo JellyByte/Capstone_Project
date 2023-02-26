@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { signInWithEmailAndPassword} from 'firebase/auth'
 import { auth } from '../../firebase-config';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
  
 export const Login = () => {
 
@@ -129,9 +129,8 @@ export const Login = () => {
         {err && <span>something went wrong</span>}
   
         <p className="text-center text-sm text-gray-500">
-          No account?
-          <a className="underline" href="">Register</a>
-        </p>
+          No account?<Link to="/Register" className="underline text-blue-500 text-lg hover:text-red-500"> Register</Link>
+          </p>
       </form>
     </div>
   </div>
