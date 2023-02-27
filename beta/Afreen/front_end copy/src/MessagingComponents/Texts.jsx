@@ -12,6 +12,7 @@ const Texts = () => {
         <Text/>
         <Text/>
         <Text/>
+        <Text/>
         </div>
     )
 }

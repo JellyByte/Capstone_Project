@@ -5,10 +5,13 @@ import { Searchbar } from './Searchbar'
 
 export const Sidebar = () => {
   return (
-    <div className='w-2/5  bg-gray-400 ' >
-        <Navbar/>
-        <Searchbar/>
-        <Chats/>
+    <div className='w-1/5  bg-gray-400 ' >
+        {/* <Navbar/> */}
+        <div className='sticky top-0'>
+          <Searchbar/>
+          <Chats/>
+
+        </div>
     </div>
   )
 }
