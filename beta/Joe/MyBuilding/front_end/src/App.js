@@ -14,7 +14,7 @@ import { AddAppartments } from './pages/AddAppartments';
 
 
 const App = () => {
-  return (
+  return ( 
     
     <>
       <NavBar/>
