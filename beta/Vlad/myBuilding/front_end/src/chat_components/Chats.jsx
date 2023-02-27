@@ -10,20 +10,19 @@ export const Chats = () => {
     const {currentUser} = useContext(AuthContext);
     const {dispatch} = useContext(ChatContext);
 
-        useEffect(()=>{
-            const getChats=()=>{
-                const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
-                    setChats(doc.data());
-                });
-                
-                return ()=>{
-                    unsub();
-                };
-            }
-            currentUser.uid && getChats();
+    useEffect(() => {
+        const getChats = () => {
+          const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
+            setChats(doc.data());
+          });
+      
+          return () => {
+            unsub();
+          };
+        };
+        currentUser.uid && getChats();
+      }, [currentUser.uid]);
 
-
-    },[currentUser.id]);
     console.log(Object.entries(chats));
 
     const handleSelect = (user) =>{
@@ -33,7 +32,7 @@ export const Chats = () => {
 
 
   return (
-    <div>
+    <div className="h-screen">
         {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date ).map((chat)=>(
         <div className='p-2 flex justify-start gap-3 cursor-pointer mono  hover:bg-gray-600' key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>{/*userchat */}
             <img className='w-14 h-14 rounded-md object-cover' src = {chat[1].userInfo.photoURL}></img>

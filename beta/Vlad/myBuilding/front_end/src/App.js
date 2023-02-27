@@ -1,6 +1,6 @@
 import {React,useState,useEffect} from 'react';
 import { Routes, Route, useNavigate,Navigate,BrowserRouter as Router } from 'react-router-dom';
-import  {Home, About, Listings,Messages,SingleListing, Profile, Documents} from './components'
+import  {Home, About, Listings,Messages,SingleListing, Profile} from './components'
 import NavBar from './components/layout/NavBar'
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -9,6 +9,8 @@ import { Login } from './components/common/Login';
 import { Register } from './components/common/Register';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
+import { Navbar } from './chat_components';
+import { Navbar2 } from './components/Navbar2';
 
 
 
@@ -53,7 +55,8 @@ const App = () => {
               <Route path="listings" element={<ProtectedRoute> <Listings/> </ProtectedRoute>} />
               <Route path="singleListing" element={<ProtectedRoute> <SingleListing/> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
-              <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
+              <Route path="navbar2" element={ <Navbar2/> } />
+
             </Route>
 
 

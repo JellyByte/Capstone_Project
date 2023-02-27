@@ -105,7 +105,7 @@ export const Input = () => {
     
   
   return (
-    <div className='h-1/6 p-2.5  font-mono'>
+    <div className=' p-2.5  font-mono'>
 
 
        
@@ -120,13 +120,14 @@ export const Input = () => {
             value={text}
             />
             <div class="w-2/6 flex flex-row items-center justify-between space-x-2">
-                <img className='w-6 h-6 rounded-md object-cover' src={Attach} />
+                <img className='w-6 h-6 rounded-md object-cover' src={Attach} alt=""s/>
                 <input className="hidden" type="file" id='file' onChange={(e)=>setImg(e.target.files[0])} />
                 <label htmlFor='file'>
-                    <img className='w-6 h-6 object-cover' src={Img} />
+                    <img className='w-6 h-6 object-cover' src={Img} alt=""/>
                 </label>
                 <button onClick={handleSend} className='w-14 h-10 tracking-wider text-sm bg-green-700 rounded-sm hover:bg-green-600'>send</button>
             </div>
+            {err && <span>{err}</span>}
         </div>
         
        

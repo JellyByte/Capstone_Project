@@ -1,7 +1,7 @@
 import React from 'react'
 import SignedLinks from './SignedLinks'
 import SignedOutLinks from './SignedOutLinks'
-import { Navigate, NavLink } from 'react-router-dom';
+import {  NavLink } from 'react-router-dom';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -24,10 +24,20 @@ import { AuthContext } from '../../context/AuthContext';
 
     
   return (
-    <header className='bg-slate-600 py-4'>
-        <div className='container mx-auto flex justify-between'>
-            <NavLink to="/" className='text-emerald-300 text-2xl font-medium mr-4'> myBuilding</NavLink>
-            <nav className='flex'>
+    <header className='bg-slate-600 h-14'>
+        <div className=' grid grid-cols-2  '>
+
+   
+
+
+            <NavLink to="/" className='text-emerald-300 text-2xl font-medium justify-self-start p-2'> 
+            
+          
+            myBuilding
+            
+            </NavLink>
+
+            <nav className='justify-self-end p-2'>
                 {
                   currentUser? <SignedLinks />
                   :<SignedOutLinks/>
