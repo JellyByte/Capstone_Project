@@ -1,20 +1,38 @@
-import React from 'react';
+import { useState } from "react";
+import { db } from "../firebase";
 
+export const AddAppartments = () => {
+  const [inputValue, setInputValue] = useState("");
 
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
 
-export const AddAppartment = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    db.collection("myCollection")
+      .add({
+        name: inputValue,
+        timestamp: Date.now(),
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+        setInputValue("");
+      })
+      .catch((error) => {
+        console.error("Error writing document: ", error);
+      });
+  };
 
-    return (
-        
-
-        <div>
-            <input type="text" placeholder='address' id='addr'/ >
-            <br />
-            <input type="text" placeholder='price' id='price'/>
-            <br />
-            <input type="text" placeholder='description' id='desc'/>
-            <br />
-            <button>Add</button>
-        </div>
-    )
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Enter name"
+        value={inputValue}
+        onChange={handleInputChange}
+      />
+      <button type="submit">Add</button>
+    </form>
+  );
 }
