@@ -1,6 +1,6 @@
 import {React,useState,useEffect} from 'react';
 import { Routes, Route, useNavigate,Navigate,BrowserRouter as Router } from 'react-router-dom';
-import  {Home, About, Listings,Messages,SingleListing, Profile} from './components'
+import  {Home, About, Listings,Messages,SingleListing, Profile, SendNotifications, Documents} from './components'
 import NavBar from './components/layout/NavBar'
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -55,6 +55,8 @@ const App = () => {
               <Route path="listings" element={<ProtectedRoute> <Listings/> </ProtectedRoute>} />
               <Route path="singleListing" element={<ProtectedRoute> <SingleListing/> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
+              <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
+              <Route path="sendNotifications" element={<ProtectedRoute> <SendNotifications/> </ProtectedRoute>} />
               <Route path="navbar2" element={ <Navbar2/> } />
 
             </Route>
