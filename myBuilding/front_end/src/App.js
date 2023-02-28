@@ -1,42 +1,89 @@
-import React from 'react';
-import { Routes, Route, useNavigate, BrowserRouter as Router} from 'react-router-dom';
-import { Login } from './pages/Login';
-import { Home } from './pages/Home';
-import { About } from './pages/About';
-import Messages from './pages/Messages';
-import { SingleListing } from './pages/SingleListing';
-import { Listings } from './pages/Listings';
-import { NavBar } from './pages/NavBar';
-import { Documents } from './pages/Documents';
-import { Upload } from './pages/Upload';
-import "./style.scss";
-import { AddAppartment } from './pages/AddAppartments';
+import {React,useState,useEffect} from 'react';
+import { Routes, Route, useNavigate,Navigate,BrowserRouter as Router } from 'react-router-dom';
+import  {Home, About, Listings,Messages,SingleListing, Profile, SendNotifications, Documents} from './components'
+import NavBar from './components/layout/NavBar'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Login } from './components/common/Login';
+import { Register } from './components/common/Register';
+import { useContext } from 'react';
+import { AuthContext } from './context/AuthContext';
+import { Navbar } from './chat_components';
+import { Navbar2 } from './components/Navbar2';
+
+
+
+
+//const authentication = getAuth();
+
+
+
 
 
 const App = () => {
+  const { currentUser } = useContext(AuthContext);
+
+  const ProtectedRoute = ({ children }) => {
+    currentUser ? <Navigate to="/profile" />:<Navigate to="/login" />
+    return children
+
+  };
+
+ 
+
+
   return (
-    
+    <div class='App'>
+
+      
     <>
-      <NavBar/>
-        <Routes>
-          <Route path = '/' element={<Home/>} exact/>
-          <Route path = '/login' element={<Login />}/>
-          <Route path = '/about' element={<About />}/>
-          <Route path = '/messaging' element={< Messages/>}/>
-          <Route path = '/listings' element={<Listings />}/>
-          <Route path = '/singlelisting' element={<SingleListing />}/>
-          <Route path = '/documents' element={<Documents />}/>
-          <Route path = '/upload' element={<Upload />}/>
-          <Route path = '/addAppartments' element={<AddAppartment />}/>
-        </Routes>
+
+
+    <Router>
+     <ToastContainer/>
+        <NavBar   />
+          <Routes>
+            <Route path = "/">
+              <Route 
+              index 
+              element = {<Home/>}/>
+              <Route path="login" element = {<Login/>}/>
+              <Route path="register" element = {<Register/>}/>
+              <Route path = 'about' element={<About />}/>
+              <Route path="messaging" element={<ProtectedRoute> <Messages/> </ProtectedRoute>} />
+              <Route path="listings" element={<ProtectedRoute> <Listings/> </ProtectedRoute>} />
+              <Route path="singleListing" element={<ProtectedRoute> <SingleListing/> </ProtectedRoute>} />
+              <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
+              <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
+              <Route path="sendNotifications" element={<ProtectedRoute> <SendNotifications/> </ProtectedRoute>} />
+              <Route path="navbar2" element={ <Navbar2/> } />
+
+            </Route>
+
+
+
+           
+
+          </Routes>
+
+
+            
+            
+                
+           
+      </Router>
+    
+    </>
+
+    </div>
       
-      
-    </>   
+       
+       
+              
+        
+    
   )
 }
-
-
-
-
 
 export default App
