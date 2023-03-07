@@ -10,7 +10,6 @@ import { Register } from './components/common/Register';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import { Navbar } from './chat_components';
-import { Navbar2 } from './components/Navbar2';
 
 
 
@@ -57,7 +56,6 @@ const App = () => {
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
               <Route path="sendNotifications" element={<ProtectedRoute> <SendNotifications/> </ProtectedRoute>} />
-              <Route path="navbar2" element={ <Navbar2/> } />
 
             </Route>
 
