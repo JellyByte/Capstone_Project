@@ -11,6 +11,22 @@ console.log(currentUser.displayName);
       
       <img className='w-20 h-20 rounded-md object-cover' src = {currentUser.photoURL}/>
       
-      hello {currentUser.displayName}</div>
+      hello {currentUser.displayName}
+      
+      
+      
+
+
+      
+      
+      
+      
+      
+  
+      
+      
+      </div>
+
+      
   )
 }
