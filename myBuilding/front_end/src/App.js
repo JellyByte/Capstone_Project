@@ -56,6 +56,7 @@ const App = () => {
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
               <Route path="sendNotifications" element={<ProtectedRoute> <SendNotifications/> </ProtectedRoute>} />
+             
 
             </Route>
 
