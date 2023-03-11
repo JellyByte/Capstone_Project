@@ -19,28 +19,31 @@ const SignedLinks = () => {
   return (
     
      <div >
+      
 
        <NavLink to="/" className=' hidden text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Home</NavLink>
        <NavLink to="/listings" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Listings</NavLink>
-       <NavLink to="/messaging" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Messages</NavLink>
-       <NavLink to="/documents" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Documents</NavLink>
        <NavLink to="/sendNotifications" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Send Notifications</NavLink>
        
-      <NavLink to="/profile" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200' onClick={handleToggle}>
+      <button   className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200' onClick={handleToggle}>
         Profile
-      </NavLink>
+      </button >
        <div className="relative">
       {showMenu && (
         <div className="absolute  right-0 bg-white shadow-lg rounded-lg py-2">
-          <NavLink to="/editProfile" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+          <NavLink to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
             Edit Profile
           </NavLink>
           <NavLink to="/documents" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
             Documents
           </NavLink>
-          <NavLink to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-            Settings
+        
+
+          <NavLink to="/messaging" className="block px-4 py-2 text-gray-800 hover:bg-gray-100"> 
+          Messages
           </NavLink>
+
+
           <NavLink
             className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
             onClick={() => {
