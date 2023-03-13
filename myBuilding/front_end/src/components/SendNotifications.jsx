@@ -1,83 +1,65 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import {  createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {auth,db,storage} from "../firebase-config"
-import { useState } from "react";
 import { collection, doc, getDocs, setDoc, Timestamp } from "firebase/firestore"; 
 
-
 export const SendNotifications = () => {
-  let time = Timestamp.now()
-  const notifyType = useRef(null)
-  let txt
-  let id
-  let userList = []
+  let time = Timestamp.now();
+  const notifyType = useRef(null);
+  const [isPublic, setIsPublic] = useState(true);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [notificationText, setNotificationText] = useState('');
 
-  const setTxt = (event) => txt = event.target.value
-  const setUser = (event) => id = event.target.value
+  const handleNotificationTypeChange = (event) => {
+    setIsPublic(event.target.value === 'public');
+    setSelectedUser('none');
+    //setNotificationText('');
+  }
 
-  const getUser = async () => {
-    const querySnapshot = await getDocs(collection(db, "users"))
-    querySnapshot.forEach((doc) => {
-      
-      const user = {
-        value: doc.data().displayName,
-        label: doc.data().displayName
-      }
-      userList.push(user)
-    })
+  const handleSelectedUserChange = (event) => {
+    setSelectedUser(event.target.value);
+  }
+
+  const handleNotificationTextChange = (event) => {
+    setNotificationText(event.target.value);
   }
 
   const addNotification = async () => {
-    const selectedNotifyType = notifyType.current.value
-    
-    try{
+    try {
       const newDoc = doc(collection(db, "notifications"))
-      if (id === undefined || selectedNotifyType === "public") id = "none"
+      const userId = isPublic ? 'none' : selectedUser;
       await setDoc(newDoc, {
         date: time,
-        notificationType: selectedNotifyType,
-        text: txt, 
-        userId: id
-        
-      })
-    }
-    catch(err){
+        notificationType: isPublic ? 'public' : 'private',
+        text: notificationText, 
+        userId: userId
+      });
+    } catch (err) {
       console.log("Notification Failed")
       console.log(time)
-      console.log(notifyType)
-      console.log(txt)
-      console.log(id)
+      console.log(isPublic)
+      console.log(notificationText)
+      console.log(selectedUser)
     }
   }
-
-  const noteTyping = () => {
-    if (notifyType === "public") document.getElementById("getUser").ariaReadOnly = true
-    else document.getElementById("getUser").ariaReadOnly = false
-  }
-  
-  
 
   return (
     <div>
       <h1>Send Notifications</h1> 
-      <input type="text" name="text" id="text" placeholder='notification text here' onChange={setTxt}/>
+      <input type="text" name="text" id="text" placeholder='notification text here' onChange={handleNotificationTextChange} value={notificationText} />
       <br /><br />
 
       Public Notification
-      <select name="notificationType" ref={notifyType} onChange={noteTyping}>
+      <select name="notificationType" ref={notifyType} onChange={handleNotificationTypeChange} value={isPublic ? 'public' : 'private'}>
         <option value="public">True</option>
         <option value="private">False</option>
       </select>
       <br />
 
       User: 
-      <input id="getUser" type="text" placeholder='type user here' onChange={setUser}/>
+      <input id="getUser" type="text" placeholder='type user here' onChange={handleSelectedUserChange} value={selectedUser} readOnly={isPublic} />
       <br /> <br />
       <button onClick={addNotification}>Publish</button>
-      <br />
-      <button onClick={getUser}> List Users</button>
-
-
     </div>
   )
 }
