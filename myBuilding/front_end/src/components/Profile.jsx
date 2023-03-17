@@ -3,62 +3,60 @@ import { AuthContext } from '../context/AuthContext'
 import MyComponent from "./svgs/addIcon.jsx"
 import { useState } from 'react'
 import Modal from './Modal'
+import { Loading } from './Loading'
 
 export const Profile = () => {
 const {currentUser} = useContext(AuthContext);
+const [isLoading, setIsLoading] = useState(false);
 
 
 
 
 console.log(currentUser.photoURL);
   return (
+    <>
     
-    <div className='text-mono flex'>
+    {isLoading? <Loading/> : (
 
-      <div className='p-2 '>
+<div className='text-mono flex'>
 
-        <img className='w-80 h-60 rounded-md object-cover object-top ' src = {currentUser.photoURL}/>
+<div className='p-2 '>
 
-
-
-     
-        <Modal/>
-
-        
+  <img className='w-80 h-60 rounded-md object-cover object-top ' src = {currentUser.photoURL}/>
 
 
 
-      </div>
-      <div className='p-2 flex flex-col'>
-        <div>
-          display name: {currentUser.displayName}
 
-        </div>
+  <Modal setIsLoading = {setIsLoading} isLoading = {isLoading}/>
 
-        <div>
-          email: {currentUser.email}
-
-        </div>
-
-      </div>
-      
-      
-     
-
-      
-      
-      
-
-
-      
-      
-      
-      
-      
   
-      
-      
-      </div>
+
+
+
+</div>
+<div className='p-2 flex flex-col'>
+  <div>
+    display name: {currentUser.displayName}
+
+  </div>
+
+  <div>
+    email: {currentUser.email}
+
+  </div>
+
+</div>
+</div>
+
+
+
+
+
+    )}
+    
+    </>
+    
+
 
       
   )

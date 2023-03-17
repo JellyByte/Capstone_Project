@@ -1,6 +1,6 @@
 import React from "react";
 import MyComponent from "./svgs/addIcon";
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import {ref,uploadBytesResumable,getDownloadURL, deleteObject} from "firebase/storage"
@@ -8,11 +8,12 @@ import {db,storage} from "../firebase-config"
 import { v4 as uuid } from "uuid";
 import { doc,  updateDoc  } from 'firebase/firestore';
 import { updateProfile } from "firebase/auth";
+import { Loading } from "./Loading";
 
 
 
 
-export default function Modal() {
+export default function Modal(props) {
 
     const {currentUser} = useContext(AuthContext);
     const [showModal, setShowModal] = React.useState(false);
@@ -25,46 +26,59 @@ export default function Modal() {
 
   const handleSubmit = async(e) =>{
     console.log(img);
-    const oldImageRef = ref(storage, currentUser.photoURL);
-    
-    // Delete the old image
-    //await deleteObject(oldImageRef);
-    
-    const date = new Date().getTime();
-    const storageRef = ref(storage, `${currentUser.displayName + date+"a new imagesssss"}`);
-    
-    setIsLoading(true);
-    await uploadBytesResumable(storageRef, img).then(()=>{
-        getDownloadURL(storageRef).then(async (downloadURL)=>{
-            console.log(downloadURL);
-            try{
-                await updateDoc(doc(db, "users", currentUser.uid), {
-                    photoURL: downloadURL,
-                })
-                await updateProfile(currentUser, {
-                    photoURL: downloadURL,
-                });
-                setIsLoading(false);
+    if(img === null){
+      setErr(true);
+    }else{
+      if(setErr){
+        setErr(false);
+      }
 
-            } catch (err) {
-                console.log(err);
-                setErr(true);
-                setIsLoading(false);
+      const oldImageRef = ref(storage, currentUser.photoURL);
+      
+      // Delete the old image
+      await deleteObject(oldImageRef);
+      
+      const date = new Date().getTime();
+      const storageRef = ref(storage, `${currentUser.displayName + date}`);
+      
+      props.setIsLoading(true);
+      await uploadBytesResumable(storageRef, img).then(()=>{
+          getDownloadURL(storageRef).then(async (downloadURL)=>{
+              console.log(downloadURL);
+              try{
+                  await updateDoc(doc(db, "users", currentUser.uid), {
+                      photoURL: downloadURL,
+                  })
+                  await updateProfile(currentUser, {
+                      photoURL: downloadURL,
+                  });
+                  window.location.reload();
 
-                //etLoading(false);
-            }
+              } catch (err) {
+                  console.log(err);
+                  setErr(true);
+                  //props.setIsLoading(false);
+
+                  //etLoading(false);
+              }
+              
+            })
+          setShowModal(false);
         })
-        setShowModal(false);
-      })
-      if (isLoading) {
-        return (
-            <div>Loading...</div>
-        );
+       
     }
+   
 
 
 
   }
+  useEffect(() => {
+    if (isLoading) {
+      window.addEventListener("load", () => {
+        setIsLoading(false);
+      });
+    }
+  }, [props.isLoading]);
 
 
 
@@ -72,7 +86,12 @@ export default function Modal() {
 
 
   return (
+   
+
     <>
+
+
+
       <button
         className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
@@ -81,7 +100,9 @@ export default function Modal() {
         update Profile Picture
       </button>
       {showModal ? (
+        
         <>
+
           <div
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
@@ -104,6 +125,16 @@ export default function Modal() {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
+                {err &&(
+                           <div>
+                           <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
+                             <p class="font-bold">Be Warned</p>
+                             <p>please select a picture to upload</p>
+                           </div>
+                         </div>
+
+                        )
+                        }
                   <p className="my-4 text-slate-500 text-lg leading-relaxed">
                     I always felt like I could do anything. That’s the main
                     thing people are controlled by! Thoughts- their perception
@@ -111,9 +142,10 @@ export default function Modal() {
                     themselves. If you're taught you can’t do anything, you
                     won’t do anything. I was taught I could do everything.
                   </p>
-                  <input required className='hidden'  type="file" id="file" onChange={(e)=>setImg(e.target.files[0])}/>
+                  <input required className='hidden'  type="file" id="file" onChange={(e)=>{setImg(e.target.files[0])} }/>
                         <label className='flex place-items-center gap-2 py-4' htmlFor='file'>
                         <MyComponent />
+                      
                             
                         
                             <span >Choose profile photo</span>
@@ -125,8 +157,8 @@ export default function Modal() {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
-                  >
+                    onClick={() => { setErr(false); setShowModal(false); }}
+                    >
                     Close
                   </button>
 
@@ -138,12 +170,11 @@ export default function Modal() {
                     onClick={handleSubmit}
 
                   >
+                  
                     Save Changes
+
                   </button>
-
-
-
-
+                 
                 </div>
               </div>
             </div>
@@ -151,6 +182,8 @@ export default function Modal() {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+   
+
     </>
   );
 }
