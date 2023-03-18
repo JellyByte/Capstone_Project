@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {  createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {auth,db,storage} from "../../firebase-config"
 import { useState } from "react";
 import { doc, setDoc } from "firebase/firestore"; 
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 
 
 export const Register = () => {
 
   const [err,setErr] = useState(false);
-  const[genericUserUrl, setGenericUserUrl]= useState('');
+  const {setAccountType} = useContext(AuthContext);
 
     const navigate= useNavigate();
     
@@ -22,59 +23,50 @@ export const Register = () => {
       const email = e.target[1].value;
       const password = e.target[2].value;
       const account_type = e.target[3].value;
-      
-      
-      // Create a reference to the file in Firebase Storage. This is the reference for the generic user picture which 
-     //  they can change later
-      const fileRef = ref(storage, "user-square-svgrepo-com.svg");
-      //console.log(fileRef);
-      
-      // Get the download URL for the file
-      getDownloadURL(fileRef)
-        .then((url) => {
-          console.log(url); 
-          setGenericUserUrl(url);
-        })
-        .catch((error) => {
-          console.log(error); 
-        });
-      
-      try {
+      setAccountType(account_type);
+   
+      const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
+  
         // Create user account with email and password
         const res = await createUserWithEmailAndPassword(auth, email, password);
+        await getDownloadURL(fileRef)
+          .then((url) => {
+            updateProfile(res.user, {
+              displayName,
+              account_type: account_type,
+              photoURL: url, // Pass url as argument
+            });
+            setDoc(doc(db, "users", res.user.uid), {
+              uid: res.user.uid,
+              displayName,
+              email,
+              photoURL: url, // Pass url as argument
+              account_type:account_type,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            setErr(true);
+          });
+          try{
+            await setDoc(doc(db, "userChats", res.user.uid), {});
+            
+          }catch(err){
+            console.log(err);
+            setErr(true);
+            
+          }
+          
+          navigate("/profile");
+          
       
-        // Set the storage reference for the user's profile picture
-        const date = new Date().getTime();
-        const storageRef = ref(storage, `${displayName + date}`);
-      
-        // Upload the user's profile picture to Firebase Storage
-        const fileUploadTask = await uploadBytesResumable(storageRef);
-        
-        // Add the user's information to the Firestore database
-        await setDoc(doc(db, "users", res.user.uid), {
-          uid: res.user.uid,
-          displayName,
-          email,
-          photoURL: genericUserUrl,
-          account_type
-        });
-        // Update the user's profile information
-        await updateProfile(res.user, {
-          displayName,
-          account_type,
-          photoURL: genericUserUrl,
-        });
-      
+    
       
         // Create an empty document for the user's chat data
-        await setDoc(doc(db, "userChats", res.user.uid), {});
+     
       
         // Navigate to the user's profile page
-        navigate("/profile");
-      } catch (err) {
-        console.log(err);
-        setErr(true);
-      }
+     
         
     };//end of handle submit
 

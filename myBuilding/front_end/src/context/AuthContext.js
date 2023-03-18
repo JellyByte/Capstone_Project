@@ -39,7 +39,7 @@ export const AuthContextProvider = ({ children }) => {
 
     
     return (
-      <AuthContext.Provider value={{ currentUser,accountType, setLoading }}>
+      <AuthContext.Provider value={{ currentUser,accountType, setAccountType, setLoading }}>
        {loading ? (
         <Loading/> // Render loading indicator
       ) : (

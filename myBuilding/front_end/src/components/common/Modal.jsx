@@ -26,34 +26,33 @@ export default function Modal(props) {
 
 
   const handleSubmit = async(e) =>{
-    console.log(img);
-
-if (img === null) {
-  setErr(true);
-} else {
-  if (setErr) {
-    setErr(false);
-  }
-  
-  if (
-    currentUser.photoURL !== null &&
-    currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/chat-application-a69e4.appspot.com/o/user-square-svgrepo-com.svg?alt=media&token=b74b1aa2-abfb-4ff5-9bb1-59530e06e5ab"
-  ) {
-    const oldImageRef = ref(storage, currentUser.photoURL);
     
-    // Check if the old image exists before trying to delete it
-    const objectExists = await getMetadata(oldImageRef)
-      .then(() => true)
-      .catch(() => false);
     
-    if (objectExists) {
-      // Delete the old image
-      await deleteObject(oldImageRef);
-      console.log("old image deleted");
+    
+    if (img === null) {
+      setErr(true);
     } else {
-      console.log("Object does not exist");
+      if (setErr) {
+        setErr(false);
+      }
+      
+    const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
+    if ( currentUser.photoURL !== null && currentUser.photoURL !== fileRef) {
+      const oldImageRef = ref(storage, currentUser.photoURL);
+      
+      // Check if the old image exists before trying to delete it
+      const objectExists = await getMetadata(oldImageRef)
+        .then(() => true)
+        .catch(() => false);
+      
+      if (objectExists) {
+        // Delete the old image
+        await deleteObject(oldImageRef);
+        console.log("old image deleted");
+      } else {
+        console.log("Object does not exist");
+      }
     }
-  }
   
   const date = new Date().getTime();
   const storageRef = ref(storage, `${currentUser.displayName + date}`);
