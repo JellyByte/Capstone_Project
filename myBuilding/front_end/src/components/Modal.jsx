@@ -1,5 +1,5 @@
 import React from "react";
-import MyComponent from "./svgs/addIcon";
+import {MyComponent} from "./svgs/addIcon";
 import { useState,useEffect} from "react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -8,90 +8,96 @@ import {db,storage} from "../firebase-config"
 import { v4 as uuid } from "uuid";
 import { doc,  updateDoc  } from 'firebase/firestore';
 import { updateProfile } from "firebase/auth";
-import { Loading } from "./Loading";
+import { getMetadata } from "firebase/storage";
 
 
 
 
 export default function Modal(props) {
 
-    const {currentUser} = useContext(AuthContext);
+    const {currentUser,setLoading} = useContext(AuthContext);
     const [showModal, setShowModal] = React.useState(false);
     const [img,setImg] = useState(null);//for the message input
     const [err,setErr] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+
+
 
 
 
 
   const handleSubmit = async(e) =>{
     console.log(img);
-    if(img === null){
-      setErr(true);
-    }else{
-      if(setErr){
-        setErr(false);
-      }
 
-      const oldImageRef = ref(storage, currentUser.photoURL);
-      
+if (img === null) {
+  setErr(true);
+} else {
+  if (setErr) {
+    setErr(false);
+  }
+  
+  if (
+    currentUser.photoURL !== null &&
+    currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/chat-application-a69e4.appspot.com/o/user-square-svgrepo-com.svg?alt=media&token=b74b1aa2-abfb-4ff5-9bb1-59530e06e5ab"
+  ) {
+    const oldImageRef = ref(storage, currentUser.photoURL);
+    
+    // Check if the old image exists before trying to delete it
+    const objectExists = await getMetadata(oldImageRef)
+      .then(() => true)
+      .catch(() => false);
+    
+    if (objectExists) {
       // Delete the old image
       await deleteObject(oldImageRef);
-      
-      const date = new Date().getTime();
-      const storageRef = ref(storage, `${currentUser.displayName + date}`);
-      
-      props.setIsLoading(true);
-      await uploadBytesResumable(storageRef, img).then(()=>{
-          getDownloadURL(storageRef).then(async (downloadURL)=>{
-              console.log(downloadURL);
-              try{
-                  await updateDoc(doc(db, "users", currentUser.uid), {
-                      photoURL: downloadURL,
-                  })
-                  await updateProfile(currentUser, {
-                      photoURL: downloadURL,
-                  });
-                  window.location.reload();
-
-              } catch (err) {
-                  console.log(err);
-                  setErr(true);
-                  //props.setIsLoading(false);
-
-                  //etLoading(false);
-              }
-              
-            })
-          setShowModal(false);
-        })
-       
+      console.log("old image deleted");
+    } else {
+      console.log("Object does not exist");
     }
-   
-
-
-
   }
-  useEffect(() => {
-    if (isLoading) {
-      window.addEventListener("load", () => {
-        setIsLoading(false);
-      });
-    }
-  }, [props.isLoading]);
+  
+  const date = new Date().getTime();
+  const storageRef = ref(storage, `${currentUser.displayName + date}`);
+  
+  //props.setIsLoading(true);
+  setLoading(true);
+  
+  await uploadBytesResumable(storageRef, img).then(() => {
+    getDownloadURL(storageRef).then(async (downloadURL) => {
+      
+      try {
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          photoURL: downloadURL,
+        });
+        console.log("Current user:", currentUser);
+        await updateProfile(currentUser, {
+          photoURL: downloadURL,
+        });
+        console.log(downloadURL);
+        
+        window.location.reload();
+        //props.setIsLoading(true);
+      
+      } catch (err) {
+        console.log(err);
+        setErr(true);
+        //props.setIsLoading(false);
+        //etLoading(false);
+      }
+    });
+    
+    setShowModal(false);
+  });
+  setLoading(false);
 
+}
 
-
-
+  
+  }
 
 
   return (
    
-
     <>
-
-
-
       <button
         className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
         type="button"
@@ -170,6 +176,7 @@ export default function Modal(props) {
                     onClick={handleSubmit}
 
                   >
+                    
                   
                     Save Changes
 

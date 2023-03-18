@@ -3,81 +3,78 @@ import {  createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {auth,db,storage} from "../../firebase-config"
 import { useState } from "react";
 import { doc, setDoc } from "firebase/firestore"; 
-import { 
- 
-  ref, 
-  uploadBytesResumable, 
-  getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useNavigate, Link } from 'react-router-dom';
 
-
-  import { useNavigate, Link } from 'react-router-dom';
-
-  import add from "../../chat_components/img/add.png"
 
 export const Register = () => {
 
   const [err,setErr] = useState(false);
+  const[genericUserUrl, setGenericUserUrl]= useState('');
 
     const navigate= useNavigate();
     
     const handleSubmit = async (e)=>{
       e.preventDefault();
+
+      // Get values from the form
       const displayName = e.target[0].value;
       const email = e.target[1].value;
       const password = e.target[2].value;
-      const file = e.target[3].files[0];
-      console.log(displayName );
-      console.log(email);
-
-      console.log(password);
-      console.log(file);
-
-
-      try{
-        const res = await createUserWithEmailAndPassword(auth, email, password)
+      const account_type = e.target[3].value;
+      
+      
+      // Create a reference to the file in Firebase Storage. This is the reference for the generic user picture which 
+     //  they can change later
+      const fileRef = ref(storage, "user-square-svgrepo-com.svg");
+      
+      // Get the download URL for the file
+      getDownloadURL(fileRef)
+        .then((url) => {
+          console.log(url); 
+          setGenericUserUrl(url);
+        })
+        .catch((error) => {
+          console.log(error); 
+        });
+      
+      try {
+        // Create user account with email and password
+        const res = await createUserWithEmailAndPassword(auth, email, password);
+      
+        // Set the storage reference for the user's profile picture
         const date = new Date().getTime();
         const storageRef = ref(storage, `${displayName + date}`);
-
-
-        //const storage = getStorage();
-        
-       await uploadBytesResumable(storageRef, file).then(()=>{
-        getDownloadURL(storageRef).then ( async (downloadURL) => {
-          try {
-            //Update profile
-            await updateProfile(res.user, {
-              displayName,
-              photoURL: downloadURL,
-            });
-            //create user on firestore
-            await setDoc(doc(db, "users", res.user.uid), {
-              uid: res.user.uid,
-              displayName,
-              email,
-              photoURL: downloadURL,
-            });
-
-            //create empty user chats on firestore
-            await setDoc(doc(db, "userChats", res.user.uid), {});
-            navigate("/profile");
-          } catch (err) {
-            console.log(err);
-            setErr(true);
-            //etLoading(false);
-          }
+      
+        // Upload the user's profile picture to Firebase Storage
+        const fileUploadTask = await uploadBytesResumable(storageRef);
+      
+        // Update the user's profile information
+        await updateProfile(res.user, {
+          displayName,
+          account_type,
+          photoURL: genericUserUrl
         });
-      });
-
-
-      }catch(err){
-          setErr(true);
-
-
-
+      
+        // Add the user's information to the Firestore database
+        await setDoc(doc(db, "users", res.user.uid), {
+          uid: res.user.uid,
+          displayName,
+          email,
+          photoURL: genericUserUrl,
+          account_type
+        });
+      
+        // Create an empty document for the user's chat data
+        await setDoc(doc(db, "userChats", res.user.uid), {});
+      
+        // Navigate to the user's profile page
+        navigate("/profile");
+      } catch (err) {
+        console.log(err);
+        setErr(true);
       }
-
-       
-
+        
     };//end of handle submit
 
 
@@ -90,7 +87,7 @@ export const Register = () => {
         <p className="flex justify-center text-lg font-medium">Register</p>
 
         <div>
-          <label for="email" className="text-sm font-medium">Name</label>
+          <label for="email" className="text-sm font-medium">User Name</label>
   
           <div className="relative mt-1">
             <input
@@ -169,15 +166,38 @@ export const Register = () => {
             </span>
           </div>
         </div>
+        <div>
+          <label htmlFor="password" className="text-sm font-medium">Account Type</label>
+  
+          <div className="relative mt-1">
+            {/* <input
+              type="password"
+              id="password"
+              className="w-full rounded-lg border-gray-200 p-4 pr-12 text-sm shadow-sm"
+              placeholder="Enter password"
+            /> */}
+           
+       
+          <select  >
+            <option value="Tenant">Tenant</option>
+            <option value="LandLord">LandLord</option>
+          
+          </select>
+       
+           
+  
+          
+          </div>
+        </div>
         
 
-        <input required className='hidden'  type="file" id="file" />
+        {/* <input required className='hidden'  type="file" id="file" />
             <label className='flex place-items-center gap-2 py-4' htmlFor='file'>
                 <img className='h-8 w-8 object-cover' src={add} alt="" />
                
                 <span >Choose profile photo</span>
             </label>
-        
+         */}
 
 
   
@@ -185,7 +205,7 @@ export const Register = () => {
           type="submit"
           className="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
         >
-          Sign in
+          Register
         </button>
         {err && <span>something went wrong</span>}
   
