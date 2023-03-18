@@ -7,9 +7,9 @@ import { db } from "../firebase-config";
 export const Chats = () => {
 
     const [chats,setChats] = useState([]);
-    const {currentUser} = useContext(AuthContext);
+    const {currentUser,setLoading} = useContext(AuthContext);
     const {dispatch} = useContext(ChatContext);
-
+    setLoading(true);
     useEffect(() => {
         const getChats = () => {
           const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
@@ -22,6 +22,7 @@ export const Chats = () => {
         };
         currentUser.uid && getChats();
       }, [currentUser.uid]);
+      setLoading(false);
 
     console.log(Object.entries(chats));
 

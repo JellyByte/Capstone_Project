@@ -8,7 +8,7 @@ import { Loading } from '../Loading'
 export const Profile = () => {
 const {currentUser,accountType} = useContext(AuthContext);
 
-console.log(accountType)
+console.log(currentUser.photoURL);
 //console.log(currentUser.photoURL)
   return (
 <>

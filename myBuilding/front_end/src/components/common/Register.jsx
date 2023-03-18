@@ -27,6 +27,7 @@ export const Register = () => {
       // Create a reference to the file in Firebase Storage. This is the reference for the generic user picture which 
      //  they can change later
       const fileRef = ref(storage, "user-square-svgrepo-com.svg");
+      //console.log(fileRef);
       
       // Get the download URL for the file
       getDownloadURL(fileRef)
@@ -48,14 +49,7 @@ export const Register = () => {
       
         // Upload the user's profile picture to Firebase Storage
         const fileUploadTask = await uploadBytesResumable(storageRef);
-      
-        // Update the user's profile information
-        await updateProfile(res.user, {
-          displayName,
-          account_type,
-          photoURL: genericUserUrl
-        });
-      
+        
         // Add the user's information to the Firestore database
         await setDoc(doc(db, "users", res.user.uid), {
           uid: res.user.uid,
@@ -64,6 +58,13 @@ export const Register = () => {
           photoURL: genericUserUrl,
           account_type
         });
+        // Update the user's profile information
+        await updateProfile(res.user, {
+          displayName,
+          account_type,
+          photoURL: genericUserUrl,
+        });
+      
       
         // Create an empty document for the user's chat data
         await setDoc(doc(db, "userChats", res.user.uid), {});
