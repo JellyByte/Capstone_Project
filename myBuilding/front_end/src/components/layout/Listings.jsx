@@ -1,6 +1,6 @@
 import React  from 'react'
 
-import { SingleListing } from './SingleListing';
+import { SingleListing } from '../LandLord/SingleListing';
 
 export const Listings = () => {
 

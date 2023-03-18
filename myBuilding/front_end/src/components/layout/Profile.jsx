@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import { AuthContext } from '../context/AuthContext'
+import { AuthContext } from '../../context/AuthContext'
 import { useState } from 'react'
-import Modal from './Modal'
-import { Loading } from './Loading'
+import Modal from '../common/Modal'
+import { Loading } from '../Loading'
 
 
 export const Profile = () => {

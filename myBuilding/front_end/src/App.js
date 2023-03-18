@@ -21,13 +21,20 @@ import { Navbar } from './chat_components';
 
 
 const App = () => {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, accoutType} = useContext(AuthContext);
 
   const ProtectedRoute = ({ children }) => {
     currentUser ? <Navigate to="/profile" />:<Navigate to="/login" />
     return children
 
   };
+  const LandLordRoute = ({children})=>{
+    if(accoutType === "LandLord"){
+
+    }
+    return children
+
+  }
 
  
 

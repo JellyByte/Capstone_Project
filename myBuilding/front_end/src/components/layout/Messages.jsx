@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Chat, Sidebar } from '../chat_components';
+import { Chat, Sidebar } from '../../chat_components';
 
 export const Messages = () => {
  

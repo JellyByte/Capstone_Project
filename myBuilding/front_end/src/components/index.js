@@ -1,11 +1,11 @@
-export {Home} from './Home'
-export {About} from './About'
-export {Listings} from './Listings'
-export {Messages} from './Messages'
-export {SingleListing} from './SingleListing'
-export {Profile} from './Profile'
+export {Home} from './common/Home'
+export {About} from './common/About'
+export {Listings} from './layout/Listings'
+export {Messages} from './layout/Messages'
+export {SingleListing} from './LandLord/SingleListing'
+export {Profile} from './layout/Profile'
 export {Documents} from './Documents'
-export {SendNotifications} from './SendNotifications'
+export {SendNotifications} from './LandLord/SendNotifications'
 
 
 

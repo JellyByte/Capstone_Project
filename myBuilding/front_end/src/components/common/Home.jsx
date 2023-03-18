@@ -2,7 +2,7 @@ import {React, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 import {useAuthState} from 'react-firebase-hooks/auth'
 import { getAuth } from 'firebase/auth';
-import {auth,db,storage} from "../firebase-config"
+import {auth,db,storage} from "../../firebase-config"
 import { collection, doc, getDocs, setDoc, Timestamp } from "firebase/firestore"; 
 
 

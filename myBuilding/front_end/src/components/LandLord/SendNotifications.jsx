@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import {  createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import {auth,db,storage} from "../firebase-config"
+import {auth,db,storage} from "../../firebase-config"
 import { collection, doc, getDocs, setDoc, Timestamp } from "firebase/firestore"; 
 
 export const SendNotifications = () => {

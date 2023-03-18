@@ -1,10 +1,10 @@
 import React from "react";
-import {MyComponent} from "./svgs/addIcon";
+import {MyComponent} from "../svgs/addIcon";
 import { useState,useEffect} from "react";
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import {ref,uploadBytesResumable,getDownloadURL, deleteObject} from "firebase/storage"
-import {db,storage} from "../firebase-config"
+import {db,storage} from "../../firebase-config"
 import { v4 as uuid } from "uuid";
 import { doc,  updateDoc  } from 'firebase/firestore';
 import { updateProfile } from "firebase/auth";

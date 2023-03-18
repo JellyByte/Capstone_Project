@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {auth} from "../firebase-config"
+import {auth} from "../../firebase-config"
 import { useAuthState } from "react-firebase-hooks/auth";
 export const SingleListing = () => {
   //let navigate = useNavigate();
