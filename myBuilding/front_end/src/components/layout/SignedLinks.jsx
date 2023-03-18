@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink ,useNavigate} from 'react-router-dom';
-import {  signOut } from 'firebase/auth';
+import {  signOut, updateCurrentUser } from 'firebase/auth';
 import { auth } from '../../firebase-config';
 import { useState } from 'react';
+import { AuthContext } from '../../context/AuthContext';
 
 
 const SignedLinks = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
+  const {currentUser} = useContext(AuthContext)
 
   const handleToggle = () => {
     setShowMenu(!showMenu);
@@ -49,6 +51,7 @@ const SignedLinks = () => {
             onClick={() => {
               signOut(auth).then(() => {
                 navigate('/');
+                
               });
             }}
           >
