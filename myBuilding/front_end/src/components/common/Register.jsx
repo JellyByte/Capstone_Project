@@ -11,7 +11,7 @@ import { AuthContext } from '../../context/AuthContext';
 export const Register = () => {
 
   const [err,setErr] = useState(false);
-  const {setAccountType} = useContext(AuthContext);
+  const {setAccountType,GenericPhotoUrl} = useContext(AuthContext);
 
     const navigate= useNavigate();
     
@@ -23,32 +23,45 @@ export const Register = () => {
       const email = e.target[1].value;
       const password = e.target[2].value;
       const account_type = e.target[3].value;
+      //set account type
       setAccountType(account_type);
-   
-      const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
+      //create user
+      const res = await createUserWithEmailAndPassword(auth, email, password);
   
         // Create user account with email and password
-        const res = await createUserWithEmailAndPassword(auth, email, password);
-        await getDownloadURL(fileRef)
-          .then((url) => {
-            updateProfile(res.user, {
-              displayName,
-              account_type: account_type,
-              photoURL: url, // Pass url as argument
-            });
-            setDoc(doc(db, "users", res.user.uid), {
-              uid: res.user.uid,
-              displayName,
-              email,
-              photoURL: url, // Pass url as argument
-              account_type:account_type,
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-            setErr(true);
-          });
-          try{
+        
+        
+        try{
+            if(account_type === "LandLord"){
+              updateProfile(res.user, {
+                displayName,
+                account_type: account_type,
+                photoURL: GenericPhotoUrl, // Pass GenericPhotoUrl as argument^
+              });
+              setDoc(doc(db, "users", res.user.uid), {
+                uid: res.user.uid,
+                displayName,
+                email,
+                photoGenericPhotoUrl: GenericPhotoUrl, // Pass GenericPhotoUrl as argument
+                account_type:account_type,
+                tenants:[],
+              })}
+              else{
+                updateProfile(res.user, {
+                  displayName,
+                  account_type: account_type,
+                  photoURL: GenericPhotoUrl, // Pass GenericPhotoUrl as argument
+
+                });
+                setDoc(doc(db, "users", res.user.uid), {
+                  uid: res.user.uid,
+                  displayName,
+                  email,
+                  photoURL: GenericPhotoUrl, // Pass GenericPhotoUrl as argument
+                  account_type:account_type,
+                  land_lord_id:"",
+                });
+              }
             await setDoc(doc(db, "userChats", res.user.uid), {});
             
           }catch(err){

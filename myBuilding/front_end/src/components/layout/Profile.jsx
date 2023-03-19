@@ -6,9 +6,10 @@ import { Loading } from '../Loading'
 
 
 export const Profile = () => {
-const {currentUser,accountType} = useContext(AuthContext);
+const {currentUser,accountType,GenericPhotoUrl} = useContext(AuthContext);
 
 console.log(currentUser.photoURL);
+console.log(GenericPhotoUrl);
 //console.log(currentUser.photoURL)
   return (
 <>

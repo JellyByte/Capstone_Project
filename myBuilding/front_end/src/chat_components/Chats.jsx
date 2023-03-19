@@ -22,7 +22,7 @@ export const Chats = () => {
         };
         currentUser.uid && getChats();
       }, [currentUser.uid]);
-      setLoading(false);
+    setLoading(false);
 
     console.log(Object.entries(chats));
 

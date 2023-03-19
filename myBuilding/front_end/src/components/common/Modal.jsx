@@ -15,10 +15,13 @@ import { getMetadata } from "firebase/storage";
 
 export default function Modal(props) {
 
-    const {currentUser,setLoading} = useContext(AuthContext);
+    const {currentUser,setLoading,GenericPhotoUrl} = useContext(AuthContext);
     const [showModal, setShowModal] = React.useState(false);
     const [img,setImg] = useState(null);//for the message input
     const [err,setErr] = useState(false);
+    if(currentUser.photoURL === GenericPhotoUrl){
+      console.log("THEY ARE THE SAME");
+    }
 
 
 
@@ -36,8 +39,8 @@ export default function Modal(props) {
         setErr(false);
       }
       
-    const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
-    if ( currentUser.photoURL !== null && currentUser.photoURL !== fileRef) {
+    //const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
+    if (currentUser.photoURL !== GenericPhotoUrl) {
       const oldImageRef = ref(storage, currentUser.photoURL);
       
       // Check if the old image exists before trying to delete it
@@ -86,12 +89,12 @@ export default function Modal(props) {
     
     setShowModal(false);
   });
-  setLoading(false);
+      setLoading(false);
+
+    }
+
 
 }
-
-  
-  }
 
 
   return (

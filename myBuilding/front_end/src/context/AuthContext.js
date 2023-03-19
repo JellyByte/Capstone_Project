@@ -3,6 +3,8 @@ import { auth,db } from "../firebase-config";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc,getDoc, } from "firebase/firestore";
 import { Loading } from "../components/Loading";
+import { storage } from "../firebase-config";
+import { ref,getDownloadURL } from "firebase/storage";
 
 
 
@@ -12,17 +14,23 @@ export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
   const [accountType, setAccountType] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [GenericPhotoUrl,setGenericPhotoUrl] = useState("");
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
 
       if (user) {
+        console.log(user.photoURL)
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const accountType = userDoc.data().account_type;
         setAccountType(accountType);
       } else {
         setAccountType(null);
       }
+      const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
+      await getDownloadURL(fileRef)
+          .then((url) => {
+            setGenericPhotoUrl(url);})
 
       setLoading(false);
     });
@@ -39,7 +47,7 @@ export const AuthContextProvider = ({ children }) => {
 
     
     return (
-      <AuthContext.Provider value={{ currentUser,accountType, setAccountType, setLoading }}>
+      <AuthContext.Provider value={{ currentUser,accountType, setAccountType, setLoading,GenericPhotoUrl}}>
        {loading ? (
         <Loading/> // Render loading indicator
       ) : (
