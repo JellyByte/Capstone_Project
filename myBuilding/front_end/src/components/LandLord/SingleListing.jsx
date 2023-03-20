@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {auth} from "../../firebase-config"
 import { useAuthState } from "react-firebase-hooks/auth";
-export const SingleListing = () => {
+export const SingleListing = (props) => {
   //let navigate = useNavigate();
   //const[user] = useAuthState(auth)
   // useEffect(() => {
@@ -17,12 +17,11 @@ export const SingleListing = () => {
   // }, [])
   return (
       <div className="max-w-sm rounded overflow-hidden shadow-lg">
-        <img className="w-full" src="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Sunset in the mountains"/>
+        <img className="w-full" src={props.photoURL} alt="Sunset in the mountains"/>
         <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
+          <div className="font-bold text-xl mb-2"> {props.title}</div>
           <p className="text-gray-700 text-base">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis
-            eaque, exercitationem praesentium nihil.
+            description {props.descrip}
           </p>
         </div>
         <div className="px-6 pt-4 pb-2">

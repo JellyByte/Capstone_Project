@@ -3,6 +3,7 @@ import { AuthContext } from '../../context/AuthContext'
 import { useState } from 'react'
 import Modal from '../common/Modal'
 import { Loading } from '../Loading'
+import UploadForm from '../common/UploadForm'
 
 
 export const Profile = () => {
@@ -29,6 +30,7 @@ console.log(GenericPhotoUrl);
   </div>
   <div className="mt-4 md:mt-0">
     <Modal />
+    <UploadForm/>
   </div>
 </div>
 
