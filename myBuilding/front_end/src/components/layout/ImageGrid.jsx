@@ -14,7 +14,7 @@ const ImageGrid = () => {
         listingsData.push(doc.data());
       });
       setListings(listingsData);
-      console.log(listings[0].photoURL);
+      //console.log(listings[0].photoURL);
     });
 
     return () => {
@@ -27,17 +27,22 @@ const ImageGrid = () => {
   console.log("Current listings: ", listings);
 
   return (
-    <div className="flex flex-wrap justify-center items-center -mx-2">
+    <div className="grid grid-flow-rows sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
     {listings.map((listing) => (
-      <div className="w-full md:w-1/2 lg:w-1/3 p-2" key={listing.title}>
+      <div className=" mx-auto" key={listing.title}>
         <SingleListing
           photoURL={listing.photoURL}
           title={listing.title}
-          descrip={listing.descrip}
+          descrip={listing.description}
         />
       </div>
     ))}
   </div>
+  
+  
+  
+  
+  
   
   );
 };
