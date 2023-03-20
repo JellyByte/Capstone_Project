@@ -18,7 +18,7 @@ import { AuthContext } from '../../context/AuthContext';
 
   
   return (
-    <header className='bg-slate-600 h-14'>
+    <header className='bg-slate-600 h-14 '>
         <div className=' grid grid-cols-2  '>
 
    
