@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import { useState } from 'react'
 import Modal from '../common/Modal'
+import AddTenantModal from '../common/AddTenantModal'
 import { Loading } from '../Loading'
 
 
@@ -28,7 +29,8 @@ console.log(accountType);
       <p className="text-gray-500">{currentUser.email}</p>
     </div>
   </div>
-  <div className="mt-4 md:mt-0">
+  <div className="mt-4 md:mt-0 flex flex-col p-1 gap-2">
+    <AddTenantModal/>
     <Modal />
   </div>
 </div>

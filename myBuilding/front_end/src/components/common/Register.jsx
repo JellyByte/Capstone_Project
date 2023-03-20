@@ -40,9 +40,9 @@ export const Register = () => {
               });
               setDoc(doc(db, "users", res.user.uid), {
                 uid: res.user.uid,
-                displayName,
-                email,
-                photoGenericPhotoUrl: GenericPhotoUrl, // Pass GenericPhotoUrl as argument
+                displayName:displayName,
+                email:email,
+                photoUrl: GenericPhotoUrl, // Pass GenericPhotoUrl as argument
                 account_type:account_type,
                 tenants:[],
               })}
