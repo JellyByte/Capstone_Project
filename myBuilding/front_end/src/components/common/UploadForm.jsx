@@ -46,8 +46,7 @@ export default function UploadForm() {
         await uploadBytesResumable(storageRef, imgValue).then(()=>{
 
           getDownloadURL(storageRef).then(async (downloadURL)=>{
-            try{
-
+                const docRef = doc(db, "Listings", currentUser.uid);
                 await setDoc(docRef, {
                   title: titleValue,
                   description: descripValue,
@@ -55,25 +54,13 @@ export default function UploadForm() {
                   uId: currentUser.uid, // include the current user's ID in the document
                 });
 
-            }catch(e){
-              setErr(e);
-
-            }
+          
 
             })
           })
         
-
-        // await setDoc(docRef, {
-        //   title: titleValue,
-        //   description: descripValue,
-        //   photoURL: downloadURL,
-        //   uId: currentUser.uid, // include the current user's ID in the document
-        // });
-
-        const uploadTask = uploadBytesResumable(storageRef, imgValue);
       }catch(e){
-        crossOriginIsolated.log(e);
+        //crossOriginIsolated.log(e);
         setErr(e);
 
 
