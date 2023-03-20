@@ -25,8 +25,8 @@ const ImageGrid = () => {
   return (
     <div>
       {listings &&
-        listings.map((listing) => (
-          <div key={listing.id}>
+        listings.map((listing, index) => (
+            <div key={`${listing.id}-${index}`}>
             <img src={listing.photoUrl} alt={listing.title} />
             <div>{listing.title}</div>
             <div>{listing.description}</div>
