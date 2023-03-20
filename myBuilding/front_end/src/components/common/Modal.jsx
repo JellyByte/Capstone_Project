@@ -9,13 +9,15 @@ import { v4 as uuid } from "uuid";
 import { doc,  updateDoc  } from 'firebase/firestore';
 import { updateProfile } from "firebase/auth";
 import { getMetadata } from "firebase/storage";
+//import { LoadingContext } from "../../context/LoadingContext";
 
 
 
 
 export default function Modal(props) {
 
-    const {currentUser,setLoading,GenericPhotoUrl} = useContext(AuthContext);
+    const {currentUser,GenericPhotoUrl,setLoading} = useContext(AuthContext);
+    
     const [showModal, setShowModal] = React.useState(false);
     const [img,setImg] = useState(null);//for the message input
     const [err,setErr] = useState(false);
@@ -40,6 +42,7 @@ export default function Modal(props) {
       }
       
     //const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
+    setLoading(true);
     if (currentUser.photoURL !== GenericPhotoUrl) {
       const oldImageRef = ref(storage, currentUser.photoURL);
       
@@ -61,7 +64,7 @@ export default function Modal(props) {
   const storageRef = ref(storage, `${currentUser.displayName + date}`);
   
   //props.setIsLoading(true);
-  setLoading(true);
+  
   
   await uploadBytesResumable(storageRef, img).then(() => {
     getDownloadURL(storageRef).then(async (downloadURL) => {
@@ -89,7 +92,7 @@ export default function Modal(props) {
     
     setShowModal(false);
   });
-      setLoading(false);
+      //setLoading(false);
 
     }
 

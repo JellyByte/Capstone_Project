@@ -1,5 +1,5 @@
-import {React,useState,useEffect} from 'react';
-import { Routes, Route, useNavigate,Navigate,BrowserRouter as Router } from 'react-router-dom';
+import {React,useState,useEffect,useRef} from 'react';
+import { Routes, Route, useLocation,useNavigate , Navigate,BrowserRouter as Router } from 'react-router-dom';
 import  {Home, About, Listings,Messages,SingleListing, Profile, SendNotifications, Documents} from './components'
 import NavBar from './components/layout/NavBar'
 
@@ -21,20 +21,39 @@ import { Navbar } from './chat_components';
 
 
 const App = () => {
-  const { currentUser, accoutType} = useContext(AuthContext);
 
-  const ProtectedRoute = ({ children }) => {
-    currentUser ? <Navigate to="/profile" />:<Navigate to="/login" />
-    return children
+  const { currentUser, accountType,setLoading} = useContext(AuthContext);
+ 
 
-  };
-  const LandLordRoute = ({children})=>{
-    if(accoutType === "LandLord"){
+    const LandLordRoute = ({ children, pn}) => {
+     // const location = useLocation();
+     //window.history.back();
+     console.log(pn);
+     //console.log(accoutType)
+     const nav = useNavigate();
+     
+ 
+      if(accountType === "LandLord"){ 
+        nav(pn);
+         
+      }else{
+     
+        window.history.back();
+        
+        
+        
+      
+      }
+      return children
+     
+    };
 
-    }
-    return children
 
-  }
+    const ProtectedRoute = ({ children }) => {
+      currentUser ? <Navigate to="/profile" />:<Navigate to="/login" />
+      return children
+  
+    };
 
  
 
@@ -62,7 +81,7 @@ const App = () => {
               <Route path="singleListing" element={<ProtectedRoute> <SingleListing/> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
-              <Route path="sendNotifications" element={<ProtectedRoute> <SendNotifications/> </ProtectedRoute>} />
+              <Route path="sendNotifications" element={<ProtectedRoute> <LandLordRoute pn = "sendNotifications" > <SendNotifications/> </LandLordRoute> </ProtectedRoute>} />
              
 
             </Route>

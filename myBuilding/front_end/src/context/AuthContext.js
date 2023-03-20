@@ -15,6 +15,9 @@ export const AuthContextProvider = ({ children }) => {
   const [accountType, setAccountType] = useState(null);
   const [loading, setLoading] = useState(true);
   const [GenericPhotoUrl,setGenericPhotoUrl] = useState("");
+  //setLoading(true);
+ 
+  
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
@@ -24,22 +27,23 @@ export const AuthContextProvider = ({ children }) => {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const accountType = userDoc.data().account_type;
         setAccountType(accountType);
+        console.log(accountType)
       } else {
-        setAccountType(null);
+        //setAccountType(null);
       }
       const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
       await getDownloadURL(fileRef)
           .then((url) => {
             setGenericPhotoUrl(url);})
 
-      setLoading(false);
-    });
-
-    return () => {
-      unsub();
-    };
-  }, []);
- 
+          });
+          
+          setLoading(false);
+          return () => {
+            unsub();
+          };
+        }, []);
+        
   
   // useEffect(() => {
     //   console.log(currentUser);
