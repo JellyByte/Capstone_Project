@@ -21,7 +21,7 @@ export const SingleListing = (props) => {
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2"> {props.title}</div>
           <p className="text-gray-700 text-base">
-            description {props.descrip}
+             {props.descrip}
           </p>
         </div>
         <div className="px-6 pt-4 pb-2">
