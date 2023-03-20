@@ -14,35 +14,34 @@ import { getMetadata } from "firebase/storage";
 
 
 export default function UploadForm() {
-
-    const handleSubmit = async (e)=>{
-        e.preventDefault();
+    const [title, setTitle] = useState("");
+    const [descrip, setDescrip] = useState("");
+    const [img, setImg] = useState(null);
   
-        // Get values from the form
-        const title = (e.target[0].value);
-        const descrip = (e.target[1].value);
-        const img = (e.target[2].files[0]);
-       
-    }
-
-
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      // Get values from the form
+      const titleValue = e.target[0].value;
+      const descripValue = e.target[1].value;
+      const imgValue = e.target[2].files[0];
+  
+      setTitle(titleValue);
+      setDescrip(descripValue);
+      setImg(imgValue);
+  
+      console.log(titleValue);
+      console.log(descripValue);
+    };
+  
     return (
-        <div>
-            <form>
-                <label>
-                    Title:
-                    <input type="text" />
-                </label>
-                <label> Description
-                    <input type="text" />
-                </label>
-                <label>
-                    Upload Image
-                    <input type="file"/>
-                </label>
-                <button type="submit">Submit</button>
-
-            </form>
-        </div>
-    )
-}
+      <div>
+        <form onSubmit={handleSubmit}>
+          <input type="text" placeholder="title" />
+          <input type="text" placeholder="description" />
+          <input type="file" placeholder="image" />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    );
+  }
