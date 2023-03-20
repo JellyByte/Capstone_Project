@@ -20,6 +20,8 @@ export const Listings = () => {
 
       <SingleListing/>
       <SingleListing/>
+      <SingleListing/>
+      <SingleListing/>
 
 
   </div>
