@@ -30,30 +30,16 @@ const ImageGrid = () => {
     <div>
       {listings &&
         listings.map(listing => {
-          const image = listing.photoURL
-          return (
-            
-              <div key={listing.photoURL}>
-                <img
-                  src={listing.photoURL}
-                  className={`border-2 border-gray-500 hover:border-red-500 m-2 p-2 ${
-                    image && 'border-green-500'
-                  }`}
-                  style={{ width: '150px', height: '100px', userSelect: 'text' }}
-                  //onClick={event => handleImageSelect(event, url)}
-                />
-                <div>
-                  title {listing.title}
+          return(
+            <div className="flex">
 
-              </div>
-              <div>
-                description {listing.description}
+              <SingleListing photoURL = {listing.photoURL} descrip= {listing.description} title = {listing.title}/>
 
-              </div>
+            </div>
 
-              </div>
-            
           )
+
+        })
           
         
 
@@ -62,7 +48,7 @@ const ImageGrid = () => {
         
         }
          
-        )}
+        
     </div>
   );
 };
