@@ -46,7 +46,7 @@ export default function UploadForm() {
         await uploadBytesResumable(storageRef, imgValue).then(()=>{
 
           getDownloadURL(storageRef).then(async (downloadURL)=>{
-                const docRef = doc(db, "Listings", currentUser.uid);
+                const docRef = doc(db, "Listings", currentUser.uid+date);
                 await setDoc(docRef, {
                   title: titleValue,
                   description: descripValue,
