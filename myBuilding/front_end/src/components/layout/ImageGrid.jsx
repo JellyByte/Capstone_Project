@@ -29,7 +29,6 @@ const ImageGrid = () => {
 
   return (
     <div>
-      <ListingsSearchBar/>
       {listings &&
         listings.map(listing => {
           return(
