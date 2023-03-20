@@ -26,23 +26,13 @@ const App = () => {
  
 
     const LandLordRoute = ({ children, pn}) => {
-     // const location = useLocation();
-     //window.history.back();
-     console.log(pn);
-     //console.log(accoutType)
-     const nav = useNavigate();
-     
  
+     console.log(pn);
+     const nav = useNavigate();
       if(accountType === "LandLord"){ 
-        nav(pn);
-         
+        nav(pn);   
       }else{
-     
         window.history.back();
-        
-        
-        
-      
       }
       return children
      
