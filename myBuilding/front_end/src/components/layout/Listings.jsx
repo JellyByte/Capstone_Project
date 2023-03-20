@@ -11,17 +11,8 @@ export const Listings = () => {
   
   return (
     <div className="flex flex-col gap-2 p-2 ">
+      <ImageGrid/>
 
-    <SingleListing/>
-    <SingleListing/>
-    <SingleListing/>
-
-    <SingleListing/>
-      <SingleListing/>
-      <SingleListing/>
-
-      <SingleListing/>
-      <SingleListing/>
 
 
   </div>
