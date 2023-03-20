@@ -41,7 +41,7 @@ export default function UploadForm() {
       try {
         // Upload image to Firebase Storage
        // const storage = getStorage();
-        const storageRef = ref(storage, `${currentUser.uid}/${uuid()}`);
+        const storageRef = ref(storage, titleValue);
         const uploadTask = uploadBytesResumable(storageRef, imgValue);
   
         // Get download URL for uploaded image and update Firestore document
@@ -52,29 +52,20 @@ export default function UploadForm() {
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
               const docRef = doc(db, "Listings", currentUser.uid);
-              //const docRef = doc(storage, `Listings/${currentUser.uid}/${imgValue.name + uuid()}`)
-              const docSnapshot = await getDoc(docRef);
-              
-              if (docSnapshot.exists()) {
-                await updateDoc(docRef, {
-                  title: titleValue,
-                  description: descripValue,
-                  photoURL: downloadURL,
-                });
-              } else {
-                await setDoc((db, "Listings"), {
-                  title: titleValue,
-                  description: descripValue,
-                  photoURL: downloadURL,
-                  uId: currentUser.uid,
-                });
-              }
+              await setDoc(docRef, {
+                title: titleValue,
+                description: descripValue,
+                photoURL: downloadURL,
+                uId: currentUser.uid, // include the current user's ID in the document
+              });
             });
           }
         );
       } catch (err) {
         setErr(true);
       }
+  
+  
     };
   
     return (
