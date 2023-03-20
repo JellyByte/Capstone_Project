@@ -3,6 +3,7 @@ import Grid from "./Grid";
 import { auth, db, storage } from "../../firebase-config";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { SingleListing } from "../LandLord/SingleListing";
+import { ListingsSearchBar } from "./ListingsSearchBar";
 
 const ImageGrid = () => {
   const [listings, setListings] = useState([]);
@@ -28,6 +29,7 @@ const ImageGrid = () => {
 
   return (
     <div>
+      <ListingsSearchBar/>
       {listings &&
         listings.map(listing => {
           return(
