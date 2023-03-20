@@ -27,29 +27,18 @@ const ImageGrid = () => {
   console.log("Current listings: ", listings);
 
   return (
-    <div>
-      {listings &&
-        listings.map(listing => {
-          return(
-            <div className="flex">
-
-              <SingleListing photoURL = {listing.photoURL} descrip= {listing.description} title = {listing.title}/>
-
-            </div>
-
-          )
-
-        })
-          
-        
-
-
-
-        
-        }
-         
-        
-    </div>
+    <div className="flex flex-wrap justify-center items-center -mx-2">
+    {listings.map((listing) => (
+      <div className="w-full md:w-1/2 lg:w-1/3 p-2" key={listing.title}>
+        <SingleListing
+          photoURL={listing.photoURL}
+          title={listing.title}
+          descrip={listing.descrip}
+        />
+      </div>
+    ))}
+  </div>
+  
   );
 };
 
