@@ -9,7 +9,9 @@ import { AuthContext } from '../../context/AuthContext';
 const SignedLinks = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const {currentUser} = useContext(AuthContext)
+  const {accountType} = useContext(AuthContext);
+
+  console.log(accountType);
 
   const handleToggle = () => {
     setShowMenu(!showMenu);
@@ -25,7 +27,12 @@ const SignedLinks = () => {
 
        <NavLink to="/" className=' hidden text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Home</NavLink>
        <NavLink to="/listings" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Listings</NavLink>
-       <NavLink to="/sendNotifications" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Send Notifications</NavLink>
+
+       { accountType === "LandLord"?
+       <NavLink to="/sendNotifications" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Send Notifications</NavLink>:
+       null
+
+       }
        
       <button   className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200' onClick={handleToggle}>
         Profile

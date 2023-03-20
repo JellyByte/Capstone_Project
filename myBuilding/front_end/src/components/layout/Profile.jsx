@@ -2,15 +2,17 @@ import React, { useContext } from 'react'
 import { AuthContext } from '../../context/AuthContext'
 import { useState } from 'react'
 import Modal from '../common/Modal'
+import AddTenantModal from '../common/AddTenantModal'
 import { Loading } from '../Loading'
 import UploadForm from '../common/UploadForm'
 
 
 export const Profile = () => {
-const {currentUser,accountType,GenericPhotoUrl} = useContext(AuthContext);
+const {currentUser,accountType,GenericPhotoUrl,setLoading} = useContext(AuthContext);
+//setLoading(true);
+console.log(accountType);
 
-console.log(currentUser.photoURL);
-console.log(GenericPhotoUrl);
+
 //console.log(currentUser.photoURL)
   return (
 <>
@@ -28,7 +30,8 @@ console.log(GenericPhotoUrl);
       <p className="text-gray-500">{currentUser.email}</p>
     </div>
   </div>
-  <div className="mt-4 md:mt-0">
+  <div className="mt-4 md:mt-0 flex flex-col p-1 gap-2">
+    <AddTenantModal/>
     <Modal />
     <UploadForm/>
   </div>
