@@ -9,7 +9,9 @@ export const Chats = () => {
     const [chats,setChats] = useState([]);
     const {currentUser,setLoading} = useContext(AuthContext);
     const {dispatch} = useContext(ChatContext);
-    setLoading(true);
+    //setLoading(true);
+    //console.log(currentUser.photoURL)
+    console.log(currentUser)
     useEffect(() => {
         const getChats = () => {
           const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
@@ -22,7 +24,7 @@ export const Chats = () => {
         };
         currentUser.uid && getChats();
       }, [currentUser.uid]);
-    setLoading(false);
+    //setLoading(false);
 
     console.log(Object.entries(chats));
 
@@ -35,6 +37,7 @@ export const Chats = () => {
   return (
     <div className="h-screen">
         {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date ).map((chat)=>(
+          
         <div className='p-2 flex justify-start gap-3 cursor-pointer mono  hover:bg-gray-600' key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>{/*userchat */}
             <img className='w-14 h-14 rounded-md object-cover' src = {chat[1].userInfo.photoURL}></img>
             <div className='userChatInfor'>{/*userchat info */}

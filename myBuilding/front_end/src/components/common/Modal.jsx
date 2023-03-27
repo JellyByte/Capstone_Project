@@ -70,13 +70,16 @@ export default function Modal(props) {
     getDownloadURL(storageRef).then(async (downloadURL) => {
       
       try {
+        updateProfile(currentUser, {
+          
+          photoURL: downloadURL, // Pass GenericPhotoUrl as argument^
+        });
+        
+        
         await updateDoc(doc(db, "users", currentUser.uid), {
           photoURL: downloadURL,
         });
         console.log("Current user:", currentUser);
-        await updateProfile(currentUser, {
-          photoURL: downloadURL,
-        });
         console.log(downloadURL);
         
         window.location.reload();
@@ -103,11 +106,11 @@ export default function Modal(props) {
   return (
    
     <>
-      <button
-        className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
+     <button 
+    className="bg-emerald-600 text-white font-bold uppercase px-6 py-3 rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none"
+    type="button"
+    onClick={() => setShowModal(true)}
+>
         update Profile Picture
       </button>
       {showModal ? (

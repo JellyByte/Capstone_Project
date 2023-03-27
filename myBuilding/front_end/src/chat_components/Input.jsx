@@ -42,7 +42,7 @@ export const Input = () => {
 
           } catch (err) {
             console.log(err);
-            setErr(true);
+            //setErr(true);
             //etLoading(false);
           }
         })

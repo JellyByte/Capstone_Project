@@ -10,7 +10,7 @@ export const Messages = () => {
   const {data} = useContext(ChatContext);
   const{setLoading} = useContext(AuthContext);
   
-  setLoading(true);
+  //setLoading(true);
   useEffect(()=>{
     const unSub = onSnapshot(doc(db,"chats", data.chatId), (doc) =>{
       doc.exists() && setMessages(doc.data().messages);
@@ -21,7 +21,7 @@ export const Messages = () => {
     })
     
   },[data.chatId])
-  setLoading(false);
+  //setLoading(false);
   //console.log(messages)
   
 

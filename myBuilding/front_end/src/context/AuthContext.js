@@ -20,9 +20,9 @@ export const AuthContextProvider = ({ children }) => {
   
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
-
+      
       if (user) {
+        setCurrentUser(user);
         console.log(user.photoURL)
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const accountType = userDoc.data().account_type;
