@@ -9,16 +9,21 @@ import { v4 as uuid } from "uuid";
 import { doc,  updateDoc  } from 'firebase/firestore';
 import { updateProfile } from "firebase/auth";
 import { getMetadata } from "firebase/storage";
+//import { LoadingContext } from "../../context/LoadingContext";
 
 
 
 
 export default function Modal(props) {
 
-    const {currentUser,setLoading} = useContext(AuthContext);
+    const {currentUser,GenericPhotoUrl,setLoading} = useContext(AuthContext);
+    
     const [showModal, setShowModal] = React.useState(false);
     const [img,setImg] = useState(null);//for the message input
     const [err,setErr] = useState(false);
+    if(currentUser.photoURL === GenericPhotoUrl){
+      console.log("THEY ARE THE SAME");
+    }
 
 
 
@@ -26,52 +31,55 @@ export default function Modal(props) {
 
 
   const handleSubmit = async(e) =>{
-    console.log(img);
-
-if (img === null) {
-  setErr(true);
-} else {
-  if (setErr) {
-    setErr(false);
-  }
-  
-  if (
-    currentUser.photoURL !== null &&
-    currentUser.photoURL !== "https://firebasestorage.googleapis.com/v0/b/chat-application-a69e4.appspot.com/o/user-square-svgrepo-com.svg?alt=media&token=b74b1aa2-abfb-4ff5-9bb1-59530e06e5ab"
-  ) {
-    const oldImageRef = ref(storage, currentUser.photoURL);
     
-    // Check if the old image exists before trying to delete it
-    const objectExists = await getMetadata(oldImageRef)
-      .then(() => true)
-      .catch(() => false);
     
-    if (objectExists) {
-      // Delete the old image
-      await deleteObject(oldImageRef);
-      console.log("old image deleted");
+    
+    if (img === null) {
+      setErr(true);
     } else {
-      console.log("Object does not exist");
+      if (setErr) {
+        setErr(false);
+      }
+      
+    //const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
+    setLoading(true);
+    if (currentUser.photoURL !== GenericPhotoUrl) {
+      const oldImageRef = ref(storage, currentUser.photoURL);
+      
+      // Check if the old image exists before trying to delete it
+      const objectExists = await getMetadata(oldImageRef)
+        .then(() => true)
+        .catch(() => false);
+      
+      if (objectExists) {
+        // Delete the old image
+        await deleteObject(oldImageRef);
+        console.log("old image deleted");
+      } else {
+        console.log("Object does not exist");
+      }
     }
-  }
   
   const date = new Date().getTime();
   const storageRef = ref(storage, `${currentUser.displayName + date}`);
   
   //props.setIsLoading(true);
-  setLoading(true);
+  
   
   await uploadBytesResumable(storageRef, img).then(() => {
     getDownloadURL(storageRef).then(async (downloadURL) => {
       
       try {
+        updateProfile(currentUser, {
+          
+          photoURL: downloadURL, // Pass GenericPhotoUrl as argument^
+        });
+        
+        
         await updateDoc(doc(db, "users", currentUser.uid), {
           photoURL: downloadURL,
         });
         console.log("Current user:", currentUser);
-        await updateProfile(currentUser, {
-          photoURL: downloadURL,
-        });
         console.log(downloadURL);
         
         window.location.reload();
@@ -87,22 +95,22 @@ if (img === null) {
     
     setShowModal(false);
   });
-  setLoading(false);
+      //setLoading(false);
+
+    }
+
 
 }
-
-  
-  }
 
 
   return (
    
     <>
-      <button
-        className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
+     <button 
+    className="bg-emerald-600 text-white font-bold uppercase px-6 py-3 rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none"
+    type="button"
+    onClick={() => setShowModal(true)}
+>
         update Profile Picture
       </button>
       {showModal ? (
