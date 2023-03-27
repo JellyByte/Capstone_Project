@@ -1,10 +1,7 @@
-import React, { useRef, useState, useContext } from 'react'
+import React, { useRef, useState } from 'react'
 import {  createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import {auth,db,storage, app} from "../../firebase-config"
-import { collection, doc, getDoc, setDoc, updateDoc,addDoc, Timestamp, arrayUnion } from "firebase/firestore"; 
-import { AuthContext } from '../../context/AuthContext';
-
-
+import {auth,db,storage} from "../../firebase-config"
+import { collection, doc, getDocs, setDoc, Timestamp } from "firebase/firestore"; 
 
 export const SendNotifications = () => {
   let time = Timestamp.now();
@@ -12,7 +9,6 @@ export const SendNotifications = () => {
   const [isPublic, setIsPublic] = useState(true);
   const [selectedUser, setSelectedUser] = useState('');
   const [notificationText, setNotificationText] = useState('');
-  const { currentUser } = useContext(AuthContext);
 
   const handleNotificationTypeChange = (event) => {
     setIsPublic(event.target.value === 'public');
@@ -27,8 +23,7 @@ export const SendNotifications = () => {
   const handleNotificationTextChange = (event) => {
     setNotificationText(event.target.value);
   }
-  
-  /*
+
   const addNotification = async () => {
     try {
       const newDoc = doc(collection(db, "notifications"))
@@ -45,69 +40,6 @@ export const SendNotifications = () => {
       console.log(isPublic)
       console.log(notificationText)
       console.log(selectedUser)
-    }
-  }*/
-  const addNotification = async () => {
-    try {
-      const notificationCollectionRef = collection(db, "notifications2")
-      const notificationDocRef = doc(notificationCollectionRef, currentUser.uid)
-
-      const notificationDoc = await getDoc(notificationDocRef)
-      if (notificationDoc.exists())  {
-        if (isPublic) {
-          const publicFieldName = {
-            time: time,
-            text: notificationText
-          }
-  
-          
-          await updateDoc(notificationDocRef, {
-            publicNotification: arrayUnion(publicFieldName),
-          })
-        }
-        else {
-          const userId = isPublic ? 'none' : selectedUser;
-          const privateFieldName = {
-            time: time,
-            tenant_id: userId,
-            text: notificationText
-          }
-          await updateDoc(notificationDocRef, {
-            privateNotification: arrayUnion(privateFieldName),
-          })
-        }
-      }
-
-      else {
-        if (isPublic) {
-          const publicFieldName = {
-            time: time,
-            text: notificationText
-          }
-  
-          
-          await setDoc(notificationDocRef, {
-            publicNotification: [publicFieldName],
-          })
-        }
-        else {
-          const userId = isPublic ? 'none' : selectedUser;
-          const privateFieldName = {
-            time: time,
-            tenant_id: userId,
-            text: notificationText
-          }
-          await setDoc(notificationDocRef, {
-            privateNotification: [privateFieldName],
-          })
-        }
-      }
-
-      
-    }
-    catch (error) {
-      console.log(error)
-      
     }
   }
 
