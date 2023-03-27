@@ -27,7 +27,7 @@ export const Home = () => {
 
   const getNotifications = async () => {
     let list = document.getElementById('p')
-
+    /*
     try {
       const querySnapshot = await getDocs(collection(db, "notifications"))
       querySnapshot.forEach((doc) => {
@@ -47,8 +47,39 @@ export const Home = () => {
 
       
     }
-    catch (error) {
+    catch (error) 
       console.log("error")
+    }*/
+
+    try {
+      const landlordRef = await getDocs(collection(db, "users"))
+      const notificationRef = await getDocs(collection(db, "notifications2"))
+
+      let landlord = ""
+
+      landlordRef.forEach ((element) => {
+        if (element.id == currentUser.uid) {
+          landlord = element.data().land_lord_id
+        }
+
+      })
+
+      notificationRef.forEach((element) => {
+        if (element.id == landlord) {
+          console.log(element.data().publicNotification)
+          for (let i = 0; i < element.data().publicNotification.length; i++) {
+            notificationList += element.data().publicNotification[i].text + "<br>"
+            list.innerHTML = notificationList
+          }
+          
+        }
+          
+      })
+      
+      
+    }
+    catch (e) {
+      console.log("landlord not found")
     }
 
     
