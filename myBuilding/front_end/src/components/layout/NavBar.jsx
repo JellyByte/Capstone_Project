@@ -14,6 +14,7 @@ import { AuthContext } from '../../context/AuthContext';
 
  const NavBar = () => {
   const { currentUser } = useContext(AuthContext);
+  console.log(currentUser)
 
 
   

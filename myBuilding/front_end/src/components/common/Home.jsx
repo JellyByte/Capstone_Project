@@ -8,22 +8,23 @@ import {AuthContext} from "../../context/AuthContext"
 
 
 export const Home = () => {
+  console.log()
   let navigate = useNavigate();
-  const auth = getAuth();
+  //const auth = getAuth();
   let notificationList = "<br>"
 
   const { currentUser } = useContext(AuthContext);
 
 
 
-  const handleLogout = () =>{
-    sessionStorage.removeItem('Auth Token')
-    return auth.currentUser && (()=>{ 
-      auth.signOut()
-      navigate('/login')
-    })
+  // const handleLogout = () =>{
+  //   sessionStorage.removeItem('Auth Token')
+  //   return auth.currentUser && (()=>{ 
+  //     auth.signOut()
+  //     navigate('/login')
+  //   })
 
-  }
+  
 
   const getNotifications = async () => {
     let list = document.getElementById('p')
@@ -58,14 +59,14 @@ export const Home = () => {
       let landlord = ""
 
       landlordRef.forEach ((element) => {
-        if (element.id == currentUser.uid) {
+        if (element.id === currentUser.uid) {
           landlord = element.data().land_lord_id
         }
 
       })
 
       notificationRef.forEach((element) => {
-        if (element.id == landlord) {
+        if (element.id === landlord) {
           console.log(element.data().publicNotification)
           for (let i = 0; i < element.data().publicNotification.length; i++) {
             notificationList += element.data().publicNotification[i].text + "<br>"
@@ -95,7 +96,7 @@ export const Home = () => {
       
 
           Hello
-          <button onClick={handleLogout()}>Log out</button>
+          <button >Log out</button>
           <br />
           <h1>Notifications</h1>
           <p id='p'></p>
