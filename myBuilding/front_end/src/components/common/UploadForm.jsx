@@ -1,6 +1,6 @@
-import React from "react";
+import React,{forwardRef} from "react";
 import {MyComponent} from "../svgs/addIcon";
-import { useState,useEffect} from "react";
+import { useState,useEffect,useImperativeHandle} from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import {ref,uploadBytesResumable,getDownloadURL, deleteObject} from "firebase/storage"
@@ -13,7 +13,7 @@ import { getMetadata } from "firebase/storage";
 
 
 
-export default function UploadForm() {
+export  const UploadForm =() => {
 
   const {currentUser,} = useContext(AuthContext);
     const [title, setTitle] = useState("");
@@ -24,11 +24,14 @@ export default function UploadForm() {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
+      console.log("WE ARE IN THE FORM")
   
       // Get values from the form
       const titleValue = e.target[0].value;
       const descripValue = e.target[1].value;
       const imgValue = e.target[2].files[0];
+
+      //callback(titleValue, descripValue, imgValue);
   
       setTitle(titleValue);
       setDescrip(descripValue);
@@ -42,6 +45,7 @@ export default function UploadForm() {
         // Upload image to Firebase Storage
        // const storage = getStorage();
        const date = new Date().getTime();
+       const uid = uuid();
         const storageRef = ref(storage, `${titleValue +date}`);
         await uploadBytesResumable(storageRef, imgValue).then(()=>{
 
@@ -51,7 +55,7 @@ export default function UploadForm() {
                   title: titleValue,
                   description: descripValue,
                   photoURL: downloadURL,
-                  uId: currentUser.uid, // include the current user's ID in the document
+                  uId: uid, // include the current user's ID in the document
                 });
 
           
@@ -68,11 +72,15 @@ export default function UploadForm() {
   
   
     };
+
+    // useImperativeHandle(ref, () => ({
+    //   handleSubmit: handleSubmit,
+    // }));
   
     return (
       <div>
         {err && <p>Error uploading form data</p>}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={ handleSubmit}>
           <input type="text" placeholder="title" />
           <input type="text" placeholder="description" />
           <input type="file" placeholder="image" />

@@ -1,15 +1,33 @@
-import React from 'react'
+import React,{useRef} from 'react'
 import { useState } from 'react';
 import { MyComponent } from '../svgs/addIcon';
-import UploadForm from '../common/UploadForm';
+import {UploadForm} from '../common/UploadForm';
 
 export const AddListingsModal = () => {
+
+    const childRef = useRef(null);
 
     const [showModal, setShowModal] = React.useState(false);
     const [img,setImg] = useState(null);//for the message input
     const [err,setErr] = useState(false);
-    const handleSubmit = ()=>{
+    const [selectedFile, setSelectedFile] = useState(null);
+    const handleSubmit = (e) =>{
+      e.preventDefault();
+      const titleValue = e.target[0].value;
+      const descripValue = e.target[1].value;
+      const address = e.target[2].value
+     // const imgValue = e.target.files[0];
+      console.log(titleValue);
+      console.log(descripValue);
+      console.log(address);
+      console.log(selectedFile);
 
+   
+
+
+    }
+    const handleFileSelect = (e) => {
+      setSelectedFile(e.target.files[0]);
     }
 
 
@@ -62,35 +80,102 @@ export const AddListingsModal = () => {
                   <p className="my-4 text-slate-500 text-lg leading-relaxed">
                         Lorem Ipsum
                   </p>
-                  <UploadForm/>
-
-                </div>
-                {/*footer*/}
-
-                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={() => { setErr(false); setShowModal(false); }}
-                    >
-                    Close
-                  </button>
-
-
-
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="submit"
-                    onClick={handleSubmit}
-
-                  >
-                    
+                  {/* <UploadForm ref = {childRef}/> */}
+                  <div>
+                  {err && <p>Error uploading form data</p>}
                   
-                    Save Changes
-
-                  </button>
-                 
                 </div>
+
+                </div>
+                  <form onSubmit={ handleSubmit} >
+                    <div className="px-2 flex flex-col gap-2">
+                      <input 
+                        className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        type="text" 
+                        placeholder="Title" 
+                      />
+                      <input 
+                        className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        type="text" 
+                        placeholder="Address" 
+                      />
+                      <input 
+                        className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        type="text" 
+                        placeholder="Description" 
+                      />
+                        <div className="flex flex-col gap-4">
+                          <label htmlFor="fileInput" className="block font-medium text-gray-700">
+                            Choose a file:
+                          </label>
+
+                          <div className="flex flex-col gap-2">
+                            <button
+                              className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                              type="button"
+                              onClick={() => document.getElementById("fileInput").click()}
+                            >
+                              Select file
+                            </button>
+
+                            {selectedFile && (
+                              <div className="flex flex-row items-center gap-2">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6 text-green-600"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M5 13l4 4L19 7"
+                                  />
+                                </svg>
+                                <span className="text-green-600">{selectedFile.name}</span>
+                              </div>
+                            )}
+
+                            <input
+                              id="fileInput"
+                              type="file"
+                              className="hidden"
+                              onChange={handleFileSelect}
+                            />
+                          </div>
+                        </div>
+
+
+                    </div>
+
+                    {/* <button type="submit">Submit</button> */}
+                {/*footer*/}
+                  `   <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                        <button
+                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="button"
+                          onClick={() => { setErr(false); setShowModal(false); }}
+                          >
+                          Close
+                        </button>
+
+
+
+                        <button
+                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          type="submit"
+                          //onClick={handleSubmit}
+                        >
+                          
+                        
+                          Save Changes
+
+                        </button>
+                      
+                      </div>
+                  </form>
               </div>
             </div>
           </div>

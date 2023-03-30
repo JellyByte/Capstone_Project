@@ -30,7 +30,7 @@ const ImageGrid = () => {
   return (
     <div className="grid grid-flow-rows sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
     {listings.map((listing) => (
-      <div className=" mx-auto" key={listing.title}>
+      <div className=" mx-auto" key={listing.uId}>
         <SingleListing
           photoURL={listing.photoURL}
           title={listing.title}

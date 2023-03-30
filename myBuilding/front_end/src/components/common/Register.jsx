@@ -42,7 +42,7 @@ export const Register = () => {
                 uid: res.user.uid,
                 displayName:displayName,
                 email:email,
-                photoUrl: GenericPhotoUrl, // Pass GenericPhotoUrl as argument
+                photoURL: GenericPhotoUrl, // Pass GenericPhotoUrl as argument
                 account_type:account_type,
                 tenants:[],
               })}

@@ -81,6 +81,11 @@ export default function Modal(props) {
         });
         console.log("Current user:", currentUser);
         console.log(downloadURL);
+        // await setDoc(doc(db, "userChats", res.user.uid), {}
+        
+        
+        // );
+
         
         window.location.reload();
         //props.setIsLoading(true);
