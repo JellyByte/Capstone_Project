@@ -1,14 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   collection,
   query,
   where,
   getDocs,
-  setDoc,
-  updateDoc,
-  serverTimestamp,
-  getDoc,
-  doc,
 } from "firebase/firestore";
 import { auth, db, storage } from "../../firebase-config";
 import { AuthContext } from "../../context/AuthContext";
@@ -18,6 +13,7 @@ export const ListingsSearchBar = () => {
   const { currentUser } = useContext(AuthContext);
   const [description, setDescription] = useState("");
   const [listing, setListing] = useState(null);
+  const [mounted, setMounted] = useState(false);
 
   const handleSearch = async () => {
     const q = query(collection(db, "Listings"), where("description", ">=", description));
@@ -32,11 +28,14 @@ export const ListingsSearchBar = () => {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.code === "Enter") {
+  useEffect(() => {
+    if (mounted && description !== '') {
       handleSearch();
+    } else {
+      setListing(null);
+      setMounted(true);
     }
-  };
+  }, [description, mounted]);
 
   return (
     <div>
@@ -46,7 +45,6 @@ export const ListingsSearchBar = () => {
         placeholder="Search"
         onChange={(e) => setDescription(e.target.value)}
         value={description}
-        onKeyDown={handleKeyDown}
       />
       {listing && (
         <div>
