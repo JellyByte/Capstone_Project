@@ -12,7 +12,7 @@ export const ListingsSearchBar = () => {
   const [err, setErr] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [description, setDescription] = useState("");
-  const [listing, setListing] = useState(null);
+  const [listings, setListings] = useState([]);
   const [mounted, setMounted] = useState(false);
 
   const handleSearch = async () => {
@@ -20,9 +20,11 @@ export const ListingsSearchBar = () => {
 
     try {
       const querySnapshot = await getDocs(q);
+      let results = [];
       querySnapshot.forEach((doc) => {
-        setListing(doc.data());
+        results.push(doc.data());
       });
+      setListings(results);
     } catch (err) {
       setErr(true);
     }
@@ -32,7 +34,7 @@ export const ListingsSearchBar = () => {
     if (mounted && description !== '') {
       handleSearch();
     } else {
-      setListing(null);
+      setListings([]);
       setMounted(true);
     }
   }, [description, mounted]);
@@ -46,13 +48,13 @@ export const ListingsSearchBar = () => {
         onChange={(e) => setDescription(e.target.value)}
         value={description}
       />
-      {listing && (
-        <div>
+      {listings && listings.map((listing, index) => (
+        <div key={index}>
           <img src={listing.photoURL} alt={listing.title} />
           <h2>{listing.title}</h2>
           <p>{listing.description}</p>
         </div>
-      )}
+      ))}
     </div>
   );
 };
