@@ -48,8 +48,8 @@ export const ListingsSearchBar = () => {
         onChange={(e) => setDescription(e.target.value)}
         value={description}
       />
-      {listings && listings.map((listing, index) => (
-        <div key={index}>
+      {listings && listings.map((listing) => (
+        <div key={listing.id}>
           <img src={listing.photoURL} alt={listing.title} />
           <h2>{listing.title}</h2>
           <p>{listing.description}</p>
