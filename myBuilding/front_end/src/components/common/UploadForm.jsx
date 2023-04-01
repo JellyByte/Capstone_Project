@@ -21,6 +21,7 @@ export default function UploadForm() {
     const [img, setImg] = useState(null);
     const [err, setErr] = useState(false);
     const [showModal, setShowModal] = React.useState(false);
+    const id = uuid();
   
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -48,6 +49,7 @@ export default function UploadForm() {
           getDownloadURL(storageRef).then(async (downloadURL)=>{
                 const docRef = doc(db, "Listings", currentUser.uid+date);
                 await setDoc(docRef, {
+                  id: id,
                   title: titleValue,
                   description: descripValue,
                   photoURL: downloadURL,
