@@ -29,7 +29,8 @@ export const AuthContextProvider = ({ children }) => {
         setAccountType(accountType);
         console.log(accountType)
       } else {
-        //setAccountType(null);
+
+        setAccountType(null);
       }
       const fileRef = ref(storage, "genericUser/user-square-svgrepo-com.svg");
       await getDownloadURL(fileRef)

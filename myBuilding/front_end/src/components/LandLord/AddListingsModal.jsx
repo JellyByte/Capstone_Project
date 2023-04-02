@@ -1,61 +1,48 @@
-import React,{useRef} from 'react'
-import { useState } from 'react';
-import { MyComponent } from '../svgs/addIcon';
-import {UploadForm} from '../common/UploadForm';
+import React, { useRef } from "react";
+import { useState } from "react";
+import { MyComponent } from "../svgs/addIcon";
+import { UploadForm } from "../common/UploadForm";
 
 export const AddListingsModal = () => {
+  const childRef = useRef(null);
 
-    const childRef = useRef(null);
+  const [showModal, setShowModal] = React.useState(false);
+  const [img, setImg] = useState(null); //for the message input
+  const [err, setErr] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const titleValue = e.target[0].value;
+    const descripValue = e.target[1].value;
+    const address = e.target[2].value;
+    // const imgValue = e.target.files[0];
+    console.log(titleValue);
+    console.log(descripValue);
+    console.log(address);
+    console.log(selectedFile);
+  };
+  const handleFileSelect = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
-    const [showModal, setShowModal] = React.useState(false);
-    const [img,setImg] = useState(null);//for the message input
-    const [err,setErr] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const handleSubmit = (e) =>{
-      e.preventDefault();
-      const titleValue = e.target[0].value;
-      const descripValue = e.target[1].value;
-      const address = e.target[2].value
-     // const imgValue = e.target.files[0];
-      console.log(titleValue);
-      console.log(descripValue);
-      console.log(address);
-      console.log(selectedFile);
-
-   
-
-
-    }
-    const handleFileSelect = (e) => {
-      setSelectedFile(e.target.files[0]);
-    }
-
-
-  return  (
-   
+  return (
     <>
-     <button 
-    className="bg-emerald-600 text-white font-bold uppercase px-6 py-3 rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none"
-    type="button"
-    onClick={() => setShowModal(true)}
->
+      <button
+        className="bg-emerald-600 text-white font-bold uppercase px-6 py-3 rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none"
+        type="button"
+        onClick={() => setShowModal(true)}
+      >
         add a Listing
       </button>
       {showModal ? (
-        
         <>
-
-          <div
-            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-          >
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-sm">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">
-                    Modal Title
-                  </h3>
+                  <h3 className="text-3xl font-semibold">Modal Title</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowModal(false)}
@@ -67,123 +54,119 @@ export const AddListingsModal = () => {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                {err &&(
-                           <div>
-                           <div class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
-                             <p class="font-bold">Be Warned</p>
-                             <p>please select a picture to upload</p>
-                           </div>
-                         </div>
-
-                        )
-                        }
+                  {err && (
+                    <div>
+                      <div
+                        class="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4"
+                        role="alert"
+                      >
+                        <p class="font-bold">Be Warned</p>
+                        <p>please select a picture to upload</p>
+                      </div>
+                    </div>
+                  )}
                   <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                        Lorem Ipsum
+                    Lorem Ipsum
                   </p>
                   {/* <UploadForm ref = {childRef}/> */}
-                  <div>
-                  {err && <p>Error uploading form data</p>}
-                  
+                  <div>{err && <p>Error uploading form data</p>}</div>
                 </div>
+                <form onSubmit={handleSubmit}>
+                  <div className="px-2 flex flex-col gap-2">
+                    <input
+                      className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Title"
+                    />
+                    <input
+                      className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Address"
+                    />
+                    <input
+                      className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="Description"
+                    />
+                    <div className="flex flex-col gap-4">
+                      <label
+                        htmlFor="fileInput"
+                        className="block font-medium text-gray-700"
+                      >
+                        Choose a file:
+                      </label>
 
-                </div>
-                  <form onSubmit={ handleSubmit} >
-                    <div className="px-2 flex flex-col gap-2">
-                      <input 
-                        className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        type="text" 
-                        placeholder="Title" 
-                      />
-                      <input 
-                        className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        type="text" 
-                        placeholder="Address" 
-                      />
-                      <input 
-                        className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        type="text" 
-                        placeholder="Description" 
-                      />
-                        <div className="flex flex-col gap-4">
-                          <label htmlFor="fileInput" className="block font-medium text-gray-700">
-                            Choose a file:
-                          </label>
-
-                          <div className="flex flex-col gap-2">
-                            <button
-                              className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                              type="button"
-                              onClick={() => document.getElementById("fileInput").click()}
-                            >
-                              Select file
-                            </button>
-
-                            {selectedFile && (
-                              <div className="flex flex-row items-center gap-2">
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="h-6 w-6 text-green-600"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5 13l4 4L19 7"
-                                  />
-                                </svg>
-                                <span className="text-green-600">{selectedFile.name}</span>
-                              </div>
-                            )}
-
-                            <input
-                              id="fileInput"
-                              type="file"
-                              className="hidden"
-                              onChange={handleFileSelect}
-                            />
-                          </div>
-                        </div>
-
-
-                    </div>
-
-                    {/* <button type="submit">Submit</button> */}
-                {/*footer*/}
-                  `   <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                      <div className="flex flex-col gap-2">
                         <button
-                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                          className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                           type="button"
-                          onClick={() => { setErr(false); setShowModal(false); }}
-                          >
-                          Close
-                        </button>
-
-
-
-                        <button
-                          className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                          type="submit"
-                          //onClick={handleSubmit}
+                          onClick={() =>
+                            document.getElementById("fileInput").click()
+                          }
                         >
-                          
-                        
-                          Save Changes
-
+                          Select file
                         </button>
-                      
+
+                        {selectedFile && (
+                          <div className="flex flex-row items-center gap-2">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-6 w-6 text-green-600"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 13l4 4L19 7"
+                              />
+                            </svg>
+                            <span className="text-green-600">
+                              {selectedFile.name}
+                            </span>
+                          </div>
+                        )}
+
+                        <input
+                          id="fileInput"
+                          type="file"
+                          className="hidden"
+                          onChange={handleFileSelect}
+                        />
                       </div>
-                  </form>
+                    </div>
+                  </div>
+                  {/* <button type="submit">Submit</button> */}
+                  {/*footer*/}`{" "}
+                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                    <button
+                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={() => {
+                        setErr(false);
+                        setShowModal(false);
+                      }}
+                    >
+                      Close
+                    </button>
+
+                    <button
+                      className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="submit"
+                      //onClick={handleSubmit}
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
-   
-
     </>
   );
-}
+};
