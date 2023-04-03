@@ -15,7 +15,8 @@ export const Home = () => {
 
   const { currentUser } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState(1);
-  const [testContent, setTestContent] = useState("");
+  const [publicNotification, setPublicNotification] = useState("");
+  const [privateNotification, setPrivateNotification] = useState("")
 
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
@@ -64,7 +65,8 @@ export const Home = () => {
       
 
       let landlord = ""
-      let newContent = "";
+      let publicContent = "";
+      let privateContent = "";
 
       landlordRef.forEach ((element) => {
         if (element.id == currentUser.uid) {
@@ -76,16 +78,26 @@ export const Home = () => {
       notificationRef.forEach((element) => {
         if (element.id == landlord) {
           console.log(element.data().publicNotification)
+          for (let i = 0; i < element.data().privateNotification.length; i++) {
+            if (element.data().privateNotification[i].tenant_id === currentUser.uid){
+              privateContent += element.data().privateNotification[i].text + "<br>"
+            }
+            
+          }
+
           for (let i = 0; i < element.data().publicNotification.length; i++) {
-            notificationList += element.data().publicNotification[i].text + "<br>"
+            //notificationList += element.data().publicNotification[i].text + "<br>"
             //list.innerHTML = notificationList
-            newContent += element.data().publicNotification[i].text + "<br>";
+            publicContent += element.data().publicNotification[i].text + "<br>";
           }
           
         }
           
       })
-      setTestContent(newContent);
+
+      setPublicNotification(publicContent);
+      setPrivateNotification(privateContent);
+      
       
     }
     catch (e) {
@@ -135,13 +147,13 @@ export const Home = () => {
             }`}
             onClick={() => handleTabClick(3)}
           >
-            Other
+            Update
           </button>
         </div>
         <div>
-          {activeTab === 1 && <p dangerouslySetInnerHTML={{ __html: testContent }}></p>}
-          {activeTab === 2 && <p>Tab 2 content goes here.</p>}
-          {activeTab === 3 && <p>Tab 3 content goes here.</p>}
+          {activeTab === 1 && <p dangerouslySetInnerHTML={{ __html: publicNotification }}></p>}
+          {activeTab === 2 && <p dangerouslySetInnerHTML={{ __html: privateNotification }}></p>}
+          {activeTab === 3 && <p>Updates goes here.</p>}
         </div>
       </div>
     </div>
