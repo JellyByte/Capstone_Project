@@ -1,38 +1,29 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {auth} from "../../firebase-config"
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
 export const SingleListing = (props) => {
-  //let navigate = useNavigate();
-  //const[user] = useAuthState(auth)
-  // useEffect(() => {
-
-  //     if (user) {
-  //         navigate('/singlelisting')
-  //     }
-
-  //     if (!user) {
-  //         navigate('/login')
-  //     }
-  // }, [])
-  console.log(props.descrip)
+  console.log(props.descrip);
   return (
-      <div className="max-w-sm rounded overflow-hidden shadow-lg">
-        <img className="w-full" src={props.photoURL} alt="Sunset in the mountains"/>
-        <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2"> {props.title}</div>
-          <p className="text-gray-700 text-base">
-            Address: {props.descrip}
-          </p>
-        </div>
-        <div className="px-6 pt-4 pb-2">
-            <span
-                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-          <span
-              className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-          <span
-              className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
-        </div>
+    <div className="max-w-sm rounded overflow-hidden shadow-lg border-2 border-gray-300 hover:shadow-xl transition-shadow duration-300">
+      <img
+        className="w-full h-64 object-cover object-center hover:opacity-75 transition-opacity"
+        src={props.photoURL}
+        alt={props.title}
+      />
+      <div className="px-6 py-4 bg-white">
+        <div className="font-bold text-xl mb-2">{props.title}</div>
+        <p className="text-gray-700 text-base mb-2">
+          <span className="font-semibold">Address:</span> {props.address},{" "}
+          {props.city}, {props.state}
+        </p>
+        <p className="text-gray-700 text-base truncate mb-4">
+          <span className="font-semibold">Description:</span> {props.descrip}
+        </p>
+        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+          Listed by: {props.postedby}
+        </span>
+      </div>
     </div>
-  )
-}
+  );
+};

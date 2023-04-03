@@ -22,7 +22,6 @@ import { collection, query, where, getDoc } from "firebase/firestore";
 export default function Modal(props) {
   const { currentUser, GenericPhotoUrl, setLoading } = useContext(AuthContext);
 
-  //dataArray.length = 0; // Clear dataArray before pushing new data
   const getUsers = async (pUrl) => {
     const userChatsRef = collection(db, "userChats");
     const currentUserDoc = doc(userChatsRef, currentUser.uid);

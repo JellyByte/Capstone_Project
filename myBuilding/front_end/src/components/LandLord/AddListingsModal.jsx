@@ -1,25 +1,120 @@
 import React, { useRef } from "react";
 import { useState } from "react";
+
+import { v4 as uuid } from "uuid";
 import { MyComponent } from "../svgs/addIcon";
-import { UploadForm } from "../common/UploadForm";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
+import { db, storage } from "../../firebase-config";
+import {
+  doc,
+  getDocs,
+  updateDoc,
+  onSnapshot,
+  arrayUnion,
+} from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
+import { getMetadata } from "firebase/storage";
+import { ChatContext } from "../../context/ChatContext";
+import { collection, query, where, getDoc, setDoc } from "firebase/firestore";
 
 export const AddListingsModal = () => {
   const childRef = useRef(null);
+  const { currentUser } = useContext(AuthContext);
 
   const [showModal, setShowModal] = React.useState(false);
   const [img, setImg] = useState(null); //for the message input
   const [err, setErr] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const handleSubmit = (e) => {
+  const [downloadURL, setDownloadURL] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const titleValue = e.target[0].value;
-    const descripValue = e.target[1].value;
-    const address = e.target[2].value;
-    // const imgValue = e.target.files[0];
+    const address = e.target[1].value;
+    const city = e.target[2].value;
+    const state = e.target[3].value;
+    const zip = e.target[4].value;
+    const description = e.target[5].value;
+
+    //const descripValue = e.target[2].value;
+
+    //const imgValue = e.target.files[0];
+    //setImg(imgValue);
     console.log(titleValue);
-    console.log(descripValue);
     console.log(address);
+    console.log(state);
+    console.log(zip);
+    console.log(description);
     console.log(selectedFile);
+
+    try {
+      // Upload image to Firebase Storage
+      // const storage = getStorage();
+      const date = new Date().getTime();
+      const listingid = uuid();
+      const combinedId =
+        currentUser.uid > listingid
+          ? currentUser.uid + listingid
+          : listingid + currentUser.uid;
+
+      const storageRef = ref(storage, `Listings/${titleValue + date}`);
+      await uploadBytesResumable(storageRef, selectedFile).then(() => {
+        getDownloadURL(storageRef).then(async (downloadURL) => {
+          setDownloadURL(downloadURL);
+          const docRef = collection(db, "Listings");
+          const listingsRef = doc(docRef, currentUser.uid);
+          // const currentUserListingRef = doc(d, listingsRef, currentUser.uid);
+          // const membersRef = collection(currentUserListingRef, "Members");
+          // const newDocRef = doc(membersRef, currentUser.uid);
+          await updateDoc(listingsRef, {
+            listings: arrayUnion({
+              uid: listingid,
+              titleValue: titleValue,
+              adress: address,
+              city: city,
+              state: state,
+              description: description,
+              downLoadURL: downloadURL,
+              zip: zip,
+            }),
+          });
+          const generalListingsRef = collection(db, "generalListings");
+          const generalListingsDoc = doc(generalListingsRef, listingid);
+          await setDoc(generalListingsDoc, {
+            address: address,
+            city: city,
+            description: description,
+            id: listingid,
+            photoURL: downloadURL,
+            postedBy: currentUser.displayName,
+            state: state,
+            titleValue: titleValue,
+            zip: zip,
+          });
+
+          // await updateDoc(docRef, {
+          //   [combinedId + ".listingInfo"]: {
+          //     title: titleValue,
+          //     address: address,
+          //     state: state,
+          //     zip: zip,
+          //     description: description,
+          //     photoURL: downloadURL,
+          //     uId: listingid, // include the current user's ID in the document
+          //   },
+          // });
+        });
+      });
+    } catch (e) {
+      //crossOriginIsolated.log(e);
+      setErr(e);
+    }
   };
   const handleFileSelect = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -65,8 +160,8 @@ export const AddListingsModal = () => {
                       </div>
                     </div>
                   )}
-                  <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                    Lorem Ipsum
+                  <p className=" text-slate-500 text-lg leading-relaxed flex justify-center">
+                    upload listing
                   </p>
                   {/* <UploadForm ref = {childRef}/> */}
                   <div>{err && <p>Error uploading form data</p>}</div>
@@ -82,6 +177,21 @@ export const AddListingsModal = () => {
                       className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       type="text"
                       placeholder="Address"
+                    />
+                    <input
+                      className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="City"
+                    />
+                    <input
+                      className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="State"
+                    />
+                    <input
+                      className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      type="text"
+                      placeholder="zipcode"
                     />
                     <input
                       className="px-4 py-2 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
