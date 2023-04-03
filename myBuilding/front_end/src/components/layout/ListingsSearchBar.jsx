@@ -16,7 +16,7 @@ export const ListingsSearchBar = () => {
   const [mounted, setMounted] = useState(false);
 
   const handleSearch = async () => {
-    const q = query(collection(db, "Listings"), where("description", ">=", description));
+    const q = query(collection(db, "generalListings"), where("state", "==", description));
 
     try {
       const querySnapshot = await getDocs(q);
