@@ -9,8 +9,7 @@ import { Login } from './components/common/Login';
 import { Register } from './components/common/Register';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
-import { Navbar } from './chat_components';
-
+import MyListings from './components/LandLord/MyListings';
 
 
 
@@ -71,6 +70,8 @@ const App = () => {
               <Route path="singleListing" element={<ProtectedRoute> <SingleListing/> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
+              <Route path="mylistings" element={<ProtectedRoute> <MyListings/> </ProtectedRoute>} />
+
               <Route path="sendNotifications" element={<ProtectedRoute> <LandLordRoute pn = "sendNotifications" > <SendNotifications/> </LandLordRoute> </ProtectedRoute>} />
              
 
