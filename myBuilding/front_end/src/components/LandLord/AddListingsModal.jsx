@@ -72,6 +72,11 @@ export const AddListingsModal = () => {
           // const currentUserListingRef = doc(d, listingsRef, currentUser.uid);
           // const membersRef = collection(currentUserListingRef, "Members");
           // const newDocRef = doc(membersRef, currentUser.uid);
+          const docSnap = await getDoc(listingsRef);
+
+          if (!docSnap.exists()) {
+            await setDoc(listingsRef, {});
+          }
           await updateDoc(listingsRef, {
             listings: arrayUnion({
               uid: listingid,
