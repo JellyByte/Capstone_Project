@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useHistory from react-router-dom
+import ListingDetails from "../layout/ListingDetails";
 
 export const SingleListing = (props) => {
   const [showBigImage, setShowBigImage] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setShowBigImage(true);
@@ -9,6 +12,10 @@ export const SingleListing = (props) => {
 
   const handleClose = () => {
     setShowBigImage(false);
+  };
+
+  const handleListingClick = () => {
+    navigate(`/listing/${props.title}`);
   };
 
   return (
@@ -24,6 +31,15 @@ export const SingleListing = (props) => {
           className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center"
           onClick={handleClose}
         >
+          <ListingDetails 
+            title={props.title}
+            photoURL={props.photoURL}
+            address={props.address}
+            city={props.city}
+            state={props.state}
+            descrip={props.descrip}
+            postedby={props.postedby}
+          />
           <img
             className="max-h-full max-w-full"
             src={props.photoURL}
@@ -32,7 +48,12 @@ export const SingleListing = (props) => {
         </div>
       )}
       <div className="px-6 py-4 bg-white">
-        <div className="font-bold text-xl mb-2">{props.title}</div>
+        <div
+          className="font-bold text-xl mb-2 cursor-pointer"
+          onClick={handleListingClick} // Add click event handler for listing click
+        >
+          {props.title}
+        </div>
         <p className="text-gray-700 text-base mb-2">
           <span className="font-semibold">Address:</span> {props.address},{" "}
           {props.city}, {props.state}
@@ -47,3 +68,4 @@ export const SingleListing = (props) => {
     </div>
   );
 };
+

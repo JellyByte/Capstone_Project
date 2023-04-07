@@ -9,7 +9,7 @@ const SignedOutLinks = () => {
           <NavLink to="/login" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Login</NavLink>
           <NavLink to="register" className='text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200'> Register</NavLink>
           <NavLink to="/about" className='text-emerald-300 text-base font-medium hover:text-fuchsia-200'> About</NavLink>
-          
+          <NavLink to="/ListingDetails" className='text-emerald-300 text-base font-medium hover:text-fuchsia-200'> ListingDetails</NavLink>
     </>
    
   );
