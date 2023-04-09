@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useHistory from react-router-dom
+import { useNavigate, useParams } from "react-router-dom"; // Import useHistory from react-router-dom
 import ListingDetails from "../layout/ListingDetails";
 
 export const SingleListing = (props) => {
   const [showBigImage, setShowBigImage] = useState(false);
   const navigate = useNavigate();
+  const { id } = useParams;
+  console.log(id);
 
   const handleClick = () => {
     setShowBigImage(true);
@@ -15,7 +17,7 @@ export const SingleListing = (props) => {
   };
 
   const handleListingClick = () => {
-    navigate(`/listing/${props.title}`);
+    navigate(`${props.id}`);
   };
 
   return (
@@ -31,7 +33,7 @@ export const SingleListing = (props) => {
           className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-75 flex items-center justify-center"
           onClick={handleClose}
         >
-          <ListingDetails 
+          <ListingDetails
             title={props.title}
             photoURL={props.photoURL}
             address={props.address}
@@ -68,4 +70,3 @@ export const SingleListing = (props) => {
     </div>
   );
 };
-
