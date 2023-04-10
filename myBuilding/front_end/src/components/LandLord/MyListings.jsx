@@ -4,6 +4,7 @@ import { auth, db, storage } from "../../firebase-config";
 import { collection, query, onSnapshot, doc } from "firebase/firestore";
 import { SingleListing } from "../LandLord/SingleListing";
 import { Loading } from "../Loading";
+import { Link } from "react-router-dom";
 
 const MyListings = () => {
   const [listings, setListings] = useState([]);
@@ -41,17 +42,19 @@ const MyListings = () => {
     <div className="grid grid-flow-rows sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
       {listings.map((listing) => (
         <div className="mx-auto" key={listing.uid}>
-          <SingleListing
-            loading={setLoading}
-            photoURL={listing.downLoadURL}
-            title={listing.titleValue}
-            descrip={listing.description}
-            state={listing.state}
-            city={listing.city}
-            postedby={listing.postedBy}
-            address={listing.adress}
-            zip={listing.zip}
-          />
+          <Link to={`/mylistings/${listing.uid}`}>
+            <SingleListing
+              loading={setLoading}
+              photoURL={listing.downLoadURL}
+              title={listing.titleValue}
+              descrip={listing.description}
+              state={listing.state}
+              city={listing.city}
+              postedby={listing.postedBy}
+              address={listing.adress}
+              zip={listing.zip}
+            />
+          </Link>
         </div>
       ))}
     </div>
