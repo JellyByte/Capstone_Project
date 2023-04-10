@@ -9,11 +9,21 @@ export const Documents = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const { currentUser } = useContext(AuthContext);
 
+  let editMode = false
+
+  
+
   const handleImageSelect = (event, url) => {
-    const decodedUrl = decodeURIComponent(url); // Decode the URL encoding
-    const fileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1).replace(/\?.*/, ''); // Extract the filename from the decoded URL and remove the query string
-    setSelectedImage(fileName);
-    console.log(fileName);
+    if (editMode) {
+      const decodedUrl = decodeURIComponent(url); // Decode the URL encoding
+      const fileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1).replace(/\?.*/, ''); // Extract the filename from the decoded URL and remove the query string
+      setSelectedImage(fileName);
+      console.log(fileName);
+    }
+    else {
+      console.log("switch to edit mode")
+    }
+    
   }
 
   const deleteImage = () => {
@@ -30,6 +40,11 @@ export const Documents = () => {
         console.log(error);
       });
   };
+
+  const setEditMode = () => {
+    if(editMode) editMode = false
+    else editMode = true
+  }
 
   useEffect(() => {
     const imageListRef = ref(storage, `documents/${currentUser.uid}`);
@@ -71,6 +86,8 @@ export const Documents = () => {
     }
   }, [currentUser.uid]);
 
+  
+
   return (
     <div className="App">
       <input
@@ -80,23 +97,31 @@ export const Documents = () => {
         style={{ display: 'none' }}
       />
       <button onClick={() => document.querySelector('#file-input').click()}>Choose Image</button>
-      {imageList.map(url => {
-        const imageName = url.split('/').pop();
-        return (
-          <div key={url}>
-            <img
-              src={url}
-              className={`border-2 border-gray-500 hover:border-red-500 m-2 p-2 ${
-                selectedImage === imageName && 'border-green-500'
-              }`}
-              style={{ width: '150px', height: '100px', userSelect: 'text' }}
-              onClick={event => handleImageSelect(event, url)}
-            />
-          </div>
-        );
-      })}
-      {selectedImage && <p>Selected Image: {selectedImage}</p>}
+      <button onClick={setEditMode}>Edit</button>
       <button onClick={deleteImage}>Delete Image</button>
+      <br />
+      {selectedImage && <p>Selected Image: {selectedImage}</p>}
+      <br />
+      <div className='flex flex-wrap ' >
+        {imageList.map(url => {
+          const imageName = url.split('/').pop();
+          return (
+            <div key={url}>
+              <img
+                src={url}
+                className={`shadow-lg border-2 hover:shadow-2xl m-2 p-2 w-full rounded-md  ${
+                  selectedImage === imageName && 'border-green-500'
+                }`}
+                style={{ width: '400px', height: '250px', userSelect: 'text' }}
+                onClick={event => handleImageSelect(event, url)}
+              />
+            </div>
+          );
+        })}
+      </div>
+      
+      
+      
     </div>
   );
 };
