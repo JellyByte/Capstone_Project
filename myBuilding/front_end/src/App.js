@@ -11,6 +11,7 @@ import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import MyListings from './components/LandLord/MyListings';
 import ListingDetails from './components/layout/ListingDetails';
+import LandLordListingDetails from './components/LandLord/LandLordListingDetails';
 
 
 
@@ -71,7 +72,9 @@ const App = () => {
               <Route path="listings/:id" element={<ProtectedRoute> <ListingDetails /> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
-              <Route path="mylistings" element={<ProtectedRoute> <MyListings/> </ProtectedRoute>} />
+              <Route path="mylistings/" element={<ProtectedRoute> <MyListings/> </ProtectedRoute>} />
+              <Route path="mylistings/:id" element={<ProtectedRoute> <LandLordListingDetails/> </ProtectedRoute>} />
+
 
 
               <Route path="sendNotifications" element={<ProtectedRoute> <LandLordRoute pn = "sendNotifications" > <SendNotifications/> </LandLordRoute> </ProtectedRoute>} />
