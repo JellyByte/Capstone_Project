@@ -3,8 +3,9 @@ import {  createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import {auth,db,storage, app} from "../../firebase-config"
 import { collection, doc, getDoc, setDoc, updateDoc,addDoc, Timestamp, arrayUnion } from "firebase/firestore"; 
 import { AuthContext } from '../../context/AuthContext';
+import Dropdown from '../DropDown';
 
-
+const options = ['apple', 'banana', 'chocolate', 'graphics card'];
 
 export const SendNotifications = () => {
   let time = Timestamp.now();
@@ -111,23 +112,33 @@ export const SendNotifications = () => {
     }
   }
 
+  
+
   return (
     <div>
-      <h1>Send Notifications</h1> 
-      <input type="text" name="text" id="text" placeholder='notification text here' onChange={handleNotificationTextChange} value={notificationText} />
-      <br /><br />
+      <div>
+        <h1>Send Notifications</h1> 
+        <input type="text" name="text" id="text" placeholder='notification text here' onChange={handleNotificationTextChange} value={notificationText} />
+        <br /><br />
 
-      Public Notification
-      <select name="notificationType" ref={notifyType} onChange={handleNotificationTypeChange} value={isPublic ? 'public' : 'private'}>
-        <option value="public">True</option>
-        <option value="private">False</option>
-      </select>
-      <br />
+        Public Notification
+        <select name="notificationType" ref={notifyType} onChange={handleNotificationTypeChange} value={isPublic ? 'public' : 'private'}>
+          <option value="public">True</option>
+          <option value="private">False</option>
+        </select>
+        <br />
 
-      User: 
-      <input id="getUser" type="text" placeholder='type user here' onChange={handleSelectedUserChange} value={selectedUser} readOnly={isPublic} />
-      <br /> <br />
-      <button onClick={addNotification}>Publish</button>
+        User: 
+        <input id="getUser" type="text" placeholder='type user here' onChange={handleSelectedUserChange} value={selectedUser} readOnly={isPublic} />
+        <br /> <br />
+        <button onClick={addNotification}>Publish</button>
+      </div>
+
+      <div>
+        <h1>Search Test</h1>
+        <Dropdown options={options} />
+      </div>
     </div>
+    
   )
 }
