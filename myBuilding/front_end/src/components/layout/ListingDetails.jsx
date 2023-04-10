@@ -34,15 +34,15 @@ const ListingDetails = () => {
   //const { id } = useParams();
   //const listing = listings.find((listing) => listing.id === id);
   return (
-    <div className="bg-white rounded-lg overflow-hidden max-w-lg">
-      <div className="relative h-64">
+    <div className="bg-white rounded-lg overflow-hidden max-w-lg mx-auto">
+      <div className="relative h-96">
         <img
           className="absolute top-0 left-0 w-full h-full object-contain"
           src={listing.photoURL}
           alt={listing.title}
         />
       </div>
-      <div className="px-4 py-5 sm:px-6">
+      <div className="px-4 py-5 sm:px-6 text-center">
         <h1 className="font-bold text-3xl mb-2">{listing.titleValue}</h1>
         <p className="text-gray-700 text-base mb-4">
           <span className="font-semibold">Location:</span> {listing.address},{" "}
