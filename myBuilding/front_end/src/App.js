@@ -10,6 +10,7 @@ import { Register } from './components/common/Register';
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import MyListings from './components/LandLord/MyListings';
+import ListingDetails from './components/layout/ListingDetails';
 
 
 
@@ -67,10 +68,11 @@ const App = () => {
               <Route path = 'about' element={<About />}/>
               <Route path="messaging" element={<ProtectedRoute> <Messages/> </ProtectedRoute>} />
               <Route path="listings" element={<ProtectedRoute> <Listings/> </ProtectedRoute>} />
-              <Route path="singleListing" element={<ProtectedRoute> <SingleListing/> </ProtectedRoute>} />
+              <Route path="listings/:id" element={<ProtectedRoute> <ListingDetails /> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
               <Route path="mylistings" element={<ProtectedRoute> <MyListings/> </ProtectedRoute>} />
+
 
               <Route path="sendNotifications" element={<ProtectedRoute> <LandLordRoute pn = "sendNotifications" > <SendNotifications/> </LandLordRoute> </ProtectedRoute>} />
              
