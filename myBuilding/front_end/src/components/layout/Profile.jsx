@@ -6,6 +6,7 @@ import AddTenantModal from '../common/AddTenantModal'
 import { Loading } from '../Loading'
 import UploadForm from '../common/UploadForm'
 import { AddListingsModal } from '../LandLord/AddListingsModal'
+import { SendNotificationsModal } from '../LandLord/SendNotificationsModal'
 
 export const Profile = () => {
 const {currentUser,accountType,GenericPhotoUrl,setLoading} = useContext(AuthContext);
@@ -34,6 +35,7 @@ console.log(accountType);
     <div className="flex flex-row md:flex-col items-center md:items-start gap-2 md:gap-4 p-1">
       <AddTenantModal />
       <AddListingsModal />
+      <SendNotificationsModal/>
     </div>
     <div className="p-1">
       <Modal />
