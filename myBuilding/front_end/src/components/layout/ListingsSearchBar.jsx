@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   collection,
   query,
@@ -11,15 +12,28 @@ import { AuthContext } from "../../context/AuthContext";
 export const ListingsSearchBar = () => {
   const [err, setErr] = useState(false);
   const { currentUser } = useContext(AuthContext);
-  const [description, setDescription] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [listings, setListings] = useState([]);
   const [mounted, setMounted] = useState(false);
 
   const handleSearch = async () => {
-    const q = query(collection(db, "generalListings"), where("state", "==", description));
-
     try {
-      const querySnapshot = await getDocs(q);
+      let querySnapshot;
+  
+      if (searchTerm !== "") {
+        const stateQuery = query(collection(db, "generalListings"), where("state", "==", searchTerm));
+        const zipCodeQuery = query(collection(db, "generalListings"), where("zip", "==", searchTerm));
+  
+        // Run both queries in parallel
+        const [stateSnapshot, zipCodeSnapshot] = await Promise.all([getDocs(stateQuery), getDocs(zipCodeQuery)]);
+  
+        // Combine the results of both queries
+        querySnapshot = [...stateSnapshot.docs, ...zipCodeSnapshot.docs];
+      } else {
+        // If searchTerm is empty, fetch all documents
+        querySnapshot = await getDocs(collection(db, "generalListings"));
+      }
+  
       let results = [];
       querySnapshot.forEach((doc) => {
         results.push(doc.data());
@@ -30,31 +44,61 @@ export const ListingsSearchBar = () => {
     }
   };
 
+  //   try {
+  //     const querySnapshot = await getDocs(q);
+  //     let results = [];
+  //     querySnapshot.forEach((doc) => {
+  //       results.push(doc.data());
+  //     });
+  //     setListings(results);
+  //   } catch (err) {
+  //     setErr(true);
+  //   }
+  // };
+
   useEffect(() => {
-    if (mounted && description !== '') {
+    if (mounted && searchTerm !== "") {
       handleSearch();
     } else {
       setListings([]);
       setMounted(true);
     }
-  }, [description, mounted]);
+  }, [searchTerm, mounted]);
+  console.log(searchTerm)
 
   return (
     <div>
       <input
         type="text"
         className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-        placeholder="Search"
-        onChange={(e) => setDescription(e.target.value)}
-        value={description}
+        placeholder="Search by State or Zipcode"
+        onChange={(e) => setSearchTerm(e.target.value)}
+        value={searchTerm}
       />
-      {listings && listings.map((listing) => (
-        <div key={listing.id}>
-          <img src={listing.photoURL} alt={listing.title} />
-          <h2>{listing.title}</h2>
-          <p>{listing.description}</p>
-        </div>
-      ))}
+      {listings.length > 0 && (
+  <div className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md">
+    {listings.map((listing) => {
+      console.log('listing.uid:', listing.uid);
+      return (
+        <Link
+          to={`/listings/${listing.id}`}
+          key={listing.uid}
+          className="flex p-2 hover:bg-gray-100"
+        >
+          <img
+            src={listing.photoURL}
+            alt={listing.title}
+            className="w-16 h-16 object-cover mr-2"
+          />
+          <div>
+            <h2 className="text-xl font-bold">{listing.titleValue}</h2>
+            <p className="text-sm font-bold text-gray-800">{listing.address}</p>
+          </div>
+        </Link>
+      );
+    })}
+  </div>
+)}
     </div>
   );
 };
