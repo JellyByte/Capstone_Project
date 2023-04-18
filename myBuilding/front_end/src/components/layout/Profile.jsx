@@ -33,9 +33,9 @@ console.log(accountType);
   </div>
   <div className="flex flex-col items-center md:flex-row md:items-start gap-2 md:gap-4 mt-2 md:mt-0">
     <div className="flex flex-row md:flex-col items-center md:items-start gap-2 md:gap-4 p-1">
-      <AddTenantModal />
-      <AddListingsModal />
-      <SendNotificationsModal/>
+    {accountType === "LandLord" && <AddTenantModal />}
+    {accountType === "LandLord" && <AddListingsModal />}
+    {accountType === "LandLord" && <SendNotificationsModal />}
     </div>
     <div className="p-1">
       <Modal />
