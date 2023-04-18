@@ -76,26 +76,29 @@ export const ListingsSearchBar = () => {
         value={searchTerm}
       />
       {listings.length > 0 && (
-        <div className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md">
-          {listings.map((listing) => (
-            <Link
-              to={`/listings/${listing.uid}`}
-              key={listing.uid}
-              className="flex p-2 hover:bg-gray-100"
-            >
-              <img
-                src={listing.photoURL}
-                alt={listing.title}
-                className="w-16 h-16 object-cover mr-2"
-              />
-              <div>
-                <h2 className="text-xl font-bold">{listing.titleValue}</h2>
-                <p className="text-sm font-bold text-gray-800">{listing.address}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+  <div className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md">
+    {listings.map((listing) => {
+      console.log('listing.uid:', listing.uid);
+      return (
+        <Link
+          to={`/listings/${listing.id}`}
+          key={listing.uid}
+          className="flex p-2 hover:bg-gray-100"
+        >
+          <img
+            src={listing.photoURL}
+            alt={listing.title}
+            className="w-16 h-16 object-cover mr-2"
+          />
+          <div>
+            <h2 className="text-xl font-bold">{listing.titleValue}</h2>
+            <p className="text-sm font-bold text-gray-800">{listing.address}</p>
+          </div>
+        </Link>
+      );
+    })}
+  </div>
+)}
     </div>
   );
 };
