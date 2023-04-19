@@ -36,7 +36,7 @@ const SignedLinks = () => {
         to="/messaging"
         className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
       >
-        messages
+        Messages
       </NavLink>
       <NavLink
         to="/mylistings"
