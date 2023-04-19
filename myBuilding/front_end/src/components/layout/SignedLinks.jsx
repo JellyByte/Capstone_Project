@@ -39,16 +39,6 @@ const SignedLinks = () => {
         myListings
       </NavLink>
 
-      {accountType === "LandLord" ? (
-        <NavLink
-          to="/sendNotifications"
-          className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
-        >
-          {" "}
-          Send Notifications
-        </NavLink>
-      ) : null}
-
       <button
         className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
         onClick={handleToggle}
