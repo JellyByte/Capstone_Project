@@ -74,6 +74,7 @@ const App = () => {
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
               <Route path="mylistings/" element={<ProtectedRoute> <MyListings/> </ProtectedRoute>} />
               <Route path="mylistings/:id" element={<ProtectedRoute> <LandLordListingDetails/> </ProtectedRoute>} />
+              
 
 
 
