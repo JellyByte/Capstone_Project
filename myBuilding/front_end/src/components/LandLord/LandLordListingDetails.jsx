@@ -67,6 +67,36 @@ const LandLordListingDetails = () => {
       }
     });
   }
+  const handleImageSelect = (event, url) => {
+    const decodedUrl = decodeURIComponent(url); // Decode the URL encoding
+    const fileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1).replace(/\?.*/, ''); // Extract the filename from the decoded URL and remove the query string
+    setSelectedImage(fileName);
+    console.log(fileName);
+
+    
+  }
+
+  const openDoc = () => {
+    window.open(URL)
+  }
+
+  const deleteImage = () => {
+    if (selectedImage === null) return;
+    
+    if (window.confirm("Are you sure you want to delete" + selectedImage)) {
+      const imageRef = ref(storage, `Listings/${currentUser.uid}/${selectedImage}`);
+      deleteObject(imageRef)
+        .then(() => {
+          setSelectedImage(null);
+          setImageList(prevList => prevList.filter(url => url.split('/').pop() !== selectedImage));
+          window.location.reload();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    
+  };
 
   //const listing = listingData[0];
   console.log(listing);
@@ -76,10 +106,12 @@ const LandLordListingDetails = () => {
   return (
     <div className="bg-white rounded-lg overflow-hidden max-w-lg mx-auto">
       <div className="relative h-96">
+        <button>Delete onClick={deleteImage}</button>
         <img
           className="absolute top-0 left-0 w-full h-full object-contain"
           src={listing.downLoadURL}
           alt={listing.title}
+          onClick={handleImageSelect}
         />
       </div>
       <div className="px-4 py-5 sm:px-6 text-center">
