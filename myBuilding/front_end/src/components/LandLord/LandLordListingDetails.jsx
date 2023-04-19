@@ -1,16 +1,22 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, getDoc, onSnapshot } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { db } from "../../firebase-config";
 import { Loading } from "../Loading";
+import { storage } from "../../firebase-config";
+import { deleteObject, ref } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+import { updateDoc } from "firebase/firestore";
+import { arrayRemove } from "firebase/firestore";
 
 import { doc } from "firebase/firestore";
 const LandLordListingDetails = () => {
   const { id } = useParams();
   const [listingData, setListings] = useState([]);
-  console.log(id);
+  const navigate = useNavigate();
+  ///console.log(id);
 
   // useEffect(() => {
   //   const docRef = doc(db, "generalListings", id);
@@ -52,7 +58,7 @@ const LandLordListingDetails = () => {
       };
     }
   }, []);
-  console.log(listingData);
+  //console.log(listingData);
   let listing = null;
 
   if (listingData.length === 0) {
@@ -69,12 +75,63 @@ const LandLordListingDetails = () => {
   }
 
   //const listing = listingData[0];
-  console.log(listing);
+  //console.log(listing);
 
   //const { id } = useParams();
   //const listing = listings.find((listing) => listing.id === id);
+  const deleteListing = async () => {
+    console.log(listing.downLoadURL);
+    const url = null;
+    const path = decodeURIComponent(
+      listing.downLoadURL.split("?")[0].split("/o/")[1]
+    );
+
+    console.log(path);
+    const imageRef = ref(storage, path);
+    deleteObject(imageRef);
+    console.log(imageRef);
+
+    const generalListingsRef = collection(db, "generalListings");
+    const generalListingsDoc = doc(generalListingsRef, listing.uid);
+    await deleteDoc(generalListingsDoc);
+
+    console.log(listing);
+    const index = listingData[0].indexOf(listing);
+    console.log(index);
+    const arrayRef = collection(db, "Listings");
+    const ListingsDoc = doc(arrayRef, currentUser.uid);
+    const document = await getDoc(ListingsDoc);
+
+    if (document.exists()) {
+      // Get the current value of the array
+      const currentListings = document.data().listings;
+      console.log(currentListings);
+      currentListings.splice(index, 1);
+      console.log(currentListings);
+      await updateDoc(ListingsDoc, {
+        listings: currentListings,
+      });
+      navigate("/mylistings");
+
+      // Remove the element at index 0 from the array
+      // const updatedListings = arrayRemove(
+      //   currentListings,
+      //   currentListings[index]
+      // );
+
+      // Update the document to set the new value of the array
+      //await updateDoc(ListingsDoc, { listings: updatedListings });
+      //navigate("/mylistings");
+    } else {
+      // Document does not exist
+    }
+  };
   return (
     <div className="bg-white rounded-lg overflow-hidden max-w-lg mx-auto">
+      <div>
+        <button onClick={deleteListing}> delete</button>
+      </div>
+
       <div className="relative h-96">
         <img
           className="absolute top-0 left-0 w-full h-full object-contain"
