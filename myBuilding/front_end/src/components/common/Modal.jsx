@@ -221,13 +221,13 @@ export default function Modal(props) {
 
   return (
     <>
-      <button
+      {/* <button
         className="bg-emerald-600 text-white font-bold uppercase px-6 py-3 rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none"
         type="button"
         onClick={getUsers}
       >
         get users
-      </button>
+      </button> */}
       <button
         className="bg-emerald-600 text-white font-bold uppercase px-6 py-3 rounded-lg shadow-md hover:bg-emerald-700 focus:outline-none"
         type="button"

@@ -37,6 +37,15 @@ const MyListings = () => {
   if (loading) {
     return <Loading />;
   }
+  if (listings === undefined) {
+    return (
+      <div className="bg-gray-100 p-4 rounded-lg flex justify-center items-center h-screen">
+        <p className="text-gray-600 font-medium text-center">
+          You don't have any listings yet.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-flow-rows sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
