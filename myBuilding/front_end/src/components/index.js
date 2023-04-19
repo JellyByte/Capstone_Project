@@ -5,7 +5,7 @@ export {Messages} from './layout/Messages'
 export {SingleListing} from './LandLord/SingleListing'
 export {Profile} from './layout/Profile'
 export {Documents} from './Documents'
-export {SendNotifications} from './LandLord/SendNotifications'
+
 
 
 

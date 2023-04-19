@@ -77,7 +77,6 @@ const App = () => {
 
 
 
-              <Route path="sendNotifications" element={<ProtectedRoute> <LandLordRoute pn = "sendNotifications" > <SendNotifications/> </LandLordRoute> </ProtectedRoute>} />
              
 
             </Route>
