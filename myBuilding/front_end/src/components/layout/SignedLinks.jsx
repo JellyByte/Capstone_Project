@@ -39,7 +39,7 @@ const SignedLinks = () => {
         >
           Documents
         </NavLink>
-        {accountType === "landlord" && 
+        {accountType === "LandLord" && 
           <NavLink
           to="/mylistings"
           className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
@@ -96,12 +96,15 @@ const SignedLinks = () => {
               >
                 Listings
               </NavLink>
-              <NavLink
+              {accountType === "LandLord" && 
+                <NavLink
                 to="/mylistings"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-emerald-300"
-              >
-                My Listings
-              </NavLink>
+                className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
+                >
+                  My Listings
+                </NavLink>
+              
+              }
               <NavLink
                 to="/messaging"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-emerald-300"
