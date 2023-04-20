@@ -16,23 +16,7 @@ const LandLordListingDetails = () => {
   const { id } = useParams();
   const [listingData, setListings] = useState([]);
   const navigate = useNavigate();
-  ///console.log(id);
 
-  // useEffect(() => {
-  //   const docRef = doc(db, "generalListings", id);
-  //   const unsubscribe = onSnapshot(docRef, (doc) => {
-  //     if (doc.exists()) {
-  //       setListing([doc.data()]);
-  //       console.log(doc.data());
-  //     } else {
-  //       console.log("No such document!");
-  //     }
-  //   });
-
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
   const { currentUser } = useContext(AuthContext);
   useEffect(() => {
     const ListingsRef = collection(db, "Listings");
@@ -58,7 +42,7 @@ const LandLordListingDetails = () => {
       };
     }
   }, []);
-  //console.log(listingData);
+  console.log(listingData);
   let listing = null;
 
   if (listingData.length === 0) {
@@ -74,58 +58,63 @@ const LandLordListingDetails = () => {
     });
   }
 
-  //const listing = listingData[0];
-  //console.log(listing);
+  console.log(listingData);
 
-  //const { id } = useParams();
-  //const listing = listings.find((listing) => listing.id === id);
   const deleteListing = async () => {
-    console.log(listing.downLoadURL);
-    const url = null;
-    const path = decodeURIComponent(
-      listing.downLoadURL.split("?")[0].split("/o/")[1]
-    );
+    try {
+      console.log(listing.downLoadURL);
+      const url = null;
+      const path = decodeURIComponent(
+        listing.downLoadURL.split("?")[0].split("/o/")[1]
+      );
 
-    console.log(path);
-    const imageRef = ref(storage, path);
-    deleteObject(imageRef);
-    console.log(imageRef);
+      console.log(path);
+      const imageRef = ref(storage, path);
+      await deleteObject(imageRef);
+      console.log(imageRef);
 
-    const generalListingsRef = collection(db, "generalListings");
-    const generalListingsDoc = doc(generalListingsRef, listing.uid);
-    await deleteDoc(generalListingsDoc);
+      const generalListingsRef = collection(db, "generalListings");
+      const generalListingsDoc = doc(generalListingsRef, listing.uid);
+      await deleteDoc(generalListingsDoc);
 
-    console.log(listing);
-    const index = listingData[0].indexOf(listing);
-    console.log(index);
-    const arrayRef = collection(db, "Listings");
-    const ListingsDoc = doc(arrayRef, currentUser.uid);
-    const document = await getDoc(ListingsDoc);
+      console.log(listing);
+      const index = listingData[0].indexOf(listing);
+      console.log(index);
+      const arrayRef = collection(db, "Listings");
+      const ListingsDoc = doc(arrayRef, currentUser.uid);
+      const document = await getDoc(ListingsDoc);
 
-    if (document.exists()) {
-      // Get the current value of the array
-      const currentListings = document.data().listings;
-      console.log(currentListings);
-      currentListings.splice(index, 1);
-      console.log(currentListings);
-      await updateDoc(ListingsDoc, {
-        listings: currentListings,
-      });
-      navigate("/mylistings");
-
-      // Remove the element at index 0 from the array
-      // const updatedListings = arrayRemove(
-      //   currentListings,
-      //   currentListings[index]
-      // );
-
-      // Update the document to set the new value of the array
-      //await updateDoc(ListingsDoc, { listings: updatedListings });
-      //navigate("/mylistings");
-    } else {
-      // Document does not exist
+      if (document.exists()) {
+        // Get the current value of the array
+        const currentListings = document.data().listings;
+        console.log(currentListings);
+        currentListings.splice(index, 1);
+        console.log(currentListings);
+        await updateDoc(ListingsDoc, {
+          listings: currentListings,
+        });
+      } else {
+        // Document does not exist
+        throw new Error("Document does not exist");
+      }
+    } catch (error) {
+      console.error(error);
+      // handle error here
     }
   };
+  if (listing === undefined) {
+    return (
+      <div>
+        <p>No listins</p>
+      </div>
+    );
+  }
+  if (listing === null) {
+    navigate("/mylistings");
+    return null;
+  }
+  //console.log(listing);
+
   return (
     <div className="bg-white rounded-lg overflow-hidden max-w-lg mx-auto">
       <div>

@@ -51,7 +51,7 @@ const SignedLinks = () => {
       <button className="md:hidden" onClick={handleToggle}>
         <FaBars className="text-3xl text-emerald-300" />
       </button>
-      <div className="relative">
+      <div className="relative" style={{ zIndex: 999 }}>
         {showMenu && (
           <div className="absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg opacity-90">
             <div className="py-1">
