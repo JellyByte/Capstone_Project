@@ -67,6 +67,10 @@ const LandLordListingDetails = () => {
     
   // }
 
+  const deleteImage = ()=>{
+
+  }
+
  
 
   
@@ -135,7 +139,7 @@ const LandLordListingDetails = () => {
       </div>
 
       <div className="relative h-96">
-        <button onClick={deleteImage(listing.downLoadURL)}>Delete </button>
+        <button onClick={deleteImage(listing.downLoadURL)}>Delete </button>  
         <img
           className="absolute top-0 left-0 w-full h-full object-contain"
           src={listing.downLoadURL}
