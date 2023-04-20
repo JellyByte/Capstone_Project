@@ -6,13 +6,14 @@ import { AuthContext } from "../../context/AuthContext";
 import { db } from "../../firebase-config";
 import { Loading } from "../Loading";
 import { storage } from "../../firebase-config";
-import { deleteObject, ref } from "firebase/storage";
-import { useNavigate } from "react-router-dom";
-import { updateDoc } from "firebase/firestore";
-import { arrayRemove } from "firebase/firestore";
-
+import { ref, uploadBytes, listAll, getDownloadURL, deleteObject } from "firebase/storage";
 import { doc } from "firebase/firestore";
 const LandLordListingDetails = () => {
+
+  const [imageList, setImageList] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+ 
+
   const { id } = useParams();
   const [listingData, setListings] = useState([]);
   const navigate = useNavigate();
@@ -57,6 +58,18 @@ const LandLordListingDetails = () => {
       }
     });
   }
+  // const handleImageSelect = (event, url) => {
+  //   const decodedUrl = decodeURIComponent(url); // Decode the URL encoding
+  //   const fileName = decodedUrl.substring(decodedUrl.lastIndexOf('/') + 1).replace(/\?.*/, ''); // Extract the filename from the decoded URL and remove the query string
+  //   setSelectedImage(fileName);
+  //   console.log(fileName);
+
+    
+  // }
+
+ 
+
+  
 
   console.log(listingData);
 
@@ -122,6 +135,7 @@ const LandLordListingDetails = () => {
       </div>
 
       <div className="relative h-96">
+        <button onClick={deleteImage(listing.downLoadURL)}>Delete </button>
         <img
           className="absolute top-0 left-0 w-full h-full object-contain"
           src={listing.downLoadURL}
