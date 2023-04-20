@@ -58,6 +58,8 @@ export const Home = () => {
         }
       });
 
+      
+
       notificationRef.forEach((element) => {
         if (element.id == landlord) {
           console.log(element.data().publicNotification);
@@ -66,8 +68,8 @@ export const Home = () => {
               element.data().privateNotification[i].tenant_id ===
               currentUser.uid
             ) {
-              privateContent +=
-                element.data().privateNotification[i].text + "<br>";
+              privateContent =
+                element.data().privateNotification[i].text + "<br>" + privateContent;
               //timestamp = element.data().privateNotification[i].time
               //date = timestamp.getHours() + ":" + timestamp.getMinutes() + ", "+ timestamp.toDateString()
               //privateContent += date + "<br>"
@@ -75,7 +77,7 @@ export const Home = () => {
           }
 
           for (let i = 0; i < element.data().publicNotification.length; i++) {
-            publicContent += element.data().publicNotification[i].text + "<br>";
+            publicContent = element.data().publicNotification[i].text + "<br>" + publicContent;
             //publicContent += element.data().publicNotification[i].time + "<br>";
           }
         }
