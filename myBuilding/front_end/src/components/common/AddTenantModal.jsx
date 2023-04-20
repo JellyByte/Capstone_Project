@@ -22,8 +22,19 @@ import { auth } from "../../firebase-config";
 export default function AddTenantModal(props) {
   const [showModal, setShowModal] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
-  console.log(searchQuery);
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  console.log(searchQuery);
+  //l; //et users = [];
+  //let filteredUsers = [];
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const fetchedUsers = querySnapshot.docs.map((doc) => doc.data());
+      setUsers(fetchedUsers);
+    };
+    fetchUsers();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,12 +48,30 @@ export default function AddTenantModal(props) {
 
   const handleClick = async () => {
     setShowModal(true);
-    const querySnapshot = await getDocs(collection(db, "users"));
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.data());
-    });
+    const filtered = users.filter((user) => user.account_type !== "LandLord");
+    setFilteredUsers(filtered);
+    // setShowModal(true);
+    // const querySnapshot = await getDocs(collection(db, "users"));
+    // querySnapshot.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   //console.log(doc.data());
+    //   users.push(doc.data());
+    // });
+    // filteredUsers = users.filter((user) => user.account_type !== "LandLord");
+    // console.log(filteredUsers);
   };
+
+  const getResults = (e) => {
+    e.preventDefault();
+    setSearchQuery(e.target.value);
+    const filtered = users.filter(
+      (user) =>
+        user.displayName.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        user.account_type !== "LandLord"
+    );
+    setFilteredUsers(filtered);
+  };
+  console.log(filteredUsers);
 
   return (
     <div>
@@ -65,10 +94,35 @@ export default function AddTenantModal(props) {
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
+                  onChange={getResults}
                   className="border-gray-400 border-solid border rounded py-2 px-4 w-full"
                 />
               </label>
+              {searchQuery && filteredUsers.length > 0 && (
+                <div className="mb-4 max-h-40 overflow-y-scroll">
+                  <h3 className="text-lg font-bold mb-2">Results:</h3>
+                  <div className="divide-y divide-gray-400">
+                    <ul>
+                      {filteredUsers.map((result) => (
+                        <li
+                          key={result.uid}
+                          className="py-2 border-b border-gray-400 hover:bg-slate-400"
+                        >
+                          <div className="flex items-center ">
+                            <img
+                              src={result.photoURL}
+                              alt={result.displayName}
+                              className="w-12 h-12 rounded-sm mr-4 object-cover"
+                            />
+                            <span>{result.displayName}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
               <div className="flex justify-end">
                 <button
                   type="button"
