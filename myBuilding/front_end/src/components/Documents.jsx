@@ -85,7 +85,13 @@ export const Documents = () => {
   }, [currentUser.uid]);
 
   const isImage = (url) => {
-    return url.includes('jpg' || 'jpeg' || 'png' || 'gif' || 'bmp')
+    const imageTypes = ['jpg','jpeg','png','gif','bmp']
+    for (let i = 0; i < imageTypes.length; i++) {
+      if (url.includes(imageTypes[i])) {
+        return true
+      }
+    }
+    return false
   };
 
   
