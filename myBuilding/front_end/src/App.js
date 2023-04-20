@@ -72,8 +72,8 @@ const App = () => {
               <Route path="listings/:id" element={<ProtectedRoute> <ListingDetails /> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
-              <Route path="mylistings/" element={<ProtectedRoute> <MyListings/> </ProtectedRoute>} />
-              <Route path="mylistings/:id" element={<ProtectedRoute> <LandLordListingDetails/> </ProtectedRoute>} />
+              <Route path="mylistings/" element={<ProtectedRoute> <LandLordRoute> <MyListings/> </LandLordRoute> </ProtectedRoute>} />
+              <Route path="mylistings/:id" element={<ProtectedRoute> <LandLordRoute> <LandLordListingDetails/> </LandLordRoute>  </ProtectedRoute>} />
               
 
 
