@@ -7,8 +7,15 @@ import { db } from "../../firebase-config";
 import { Loading } from "../Loading";
 import { storage } from "../../firebase-config";
 import { ref, uploadBytes, listAll, getDownloadURL, deleteObject } from "firebase/storage";
+import { storage } from "../../firebase-config";
+import { ref, uploadBytes, listAll, getDownloadURL, deleteObject } from "firebase/storage";
 import { doc } from "firebase/firestore";
 const LandLordListingDetails = () => {
+
+  const [imageList, setImageList] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+ 
+
 
   const [imageList, setImageList] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -75,62 +82,8 @@ const LandLordListingDetails = () => {
 
   
 
-  console.log(listingData);
-
-  const deleteListing = async () => {
-    try {
-      console.log(listing.downLoadURL);
-      const url = null;
-      const path = decodeURIComponent(
-        listing.downLoadURL.split("?")[0].split("/o/")[1]
-      );
-
-      console.log(path);
-      const imageRef = ref(storage, path);
-      await deleteObject(imageRef);
-      console.log(imageRef);
-
-      const generalListingsRef = collection(db, "generalListings");
-      const generalListingsDoc = doc(generalListingsRef, listing.uid);
-      await deleteDoc(generalListingsDoc);
-
-      console.log(listing);
-      const index = listingData[0].indexOf(listing);
-      console.log(index);
-      const arrayRef = collection(db, "Listings");
-      const ListingsDoc = doc(arrayRef, currentUser.uid);
-      const document = await getDoc(ListingsDoc);
-
-      if (document.exists()) {
-        // Get the current value of the array
-        const currentListings = document.data().listings;
-        console.log(currentListings);
-        currentListings.splice(index, 1);
-        console.log(currentListings);
-        await updateDoc(ListingsDoc, {
-          listings: currentListings,
-        });
-      } else {
-        // Document does not exist
-        throw new Error("Document does not exist");
-      }
-    } catch (error) {
-      console.error(error);
-      // handle error here
-    }
-  };
-  if (listing === undefined) {
-    return (
-      <div>
-        <p>No listins</p>
-      </div>
-    );
-  }
-  if (listing === null) {
-    navigate("/mylistings");
-    return null;
-  }
-  //console.log(listing);
+  //const listing = listingData[0];
+  console.log(listing);
 
   return (
     <div className="bg-white rounded-lg overflow-hidden max-w-lg mx-auto">
