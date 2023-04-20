@@ -12,7 +12,7 @@ import {
 } from "firebase/storage";
 import { db, storage } from "../../firebase-config";
 import { v4 as uuid } from "uuid";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 import { getMetadata } from "firebase/storage";
 import { Link } from "react-router-dom";
@@ -20,6 +20,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { auth } from "../../firebase-config";
 
 export default function AddTenantModal(props) {
+  const { currentUser } = useContext(AuthContext);
   const [showModal, setShowModal] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [users, setUsers] = useState([]);
@@ -41,8 +42,24 @@ export default function AddTenantModal(props) {
     // handle form submission here
   };
 
-  const handleAdd = () => {
+  const handleAdd = async (id) => {
     // handle adding searchQuery to something else here
+    console.log(id);
+    try {
+      await updateDoc(doc(db, "users", id), {
+        land_lord_id: currentUser.uid,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        tenants: arrayUnion(id),
+      });
+    } catch (e) {
+      console.log(e);
+    }
     setSearchQuery("");
   };
 
@@ -107,6 +124,7 @@ export default function AddTenantModal(props) {
                         <li
                           key={result.uid}
                           className="py-2 border-b border-gray-400 hover:bg-slate-400"
+                          onClick={() => handleAdd(result.uid)}
                         >
                           <div className="flex items-center ">
                             <img
@@ -127,7 +145,7 @@ export default function AddTenantModal(props) {
                 <button
                   type="button"
                   className="bg-emerald-600 text-white font-bold py-2 px-4 rounded-lg mr-4 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
-                  onClick={handleAdd}
+                  onClick={() => handleAdd()}
                 >
                   Add
                 </button>
