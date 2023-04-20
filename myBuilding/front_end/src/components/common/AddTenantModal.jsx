@@ -15,11 +15,42 @@ import { v4 as uuid } from "uuid";
 import { doc, updateDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 import { getMetadata } from "firebase/storage";
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { auth, db, storage } from "../../firebase-config";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function AddTenantModal(props) {
   const [showModal, setShowModal] = React.useState(false);
-  const [img, setImg] = useState(null); //for the message input
+  const [tenant, setTenant] = useState(null); 
   const [err, setErr] = useState(false);
+
+  const { currentUser, accountType } = useContext(AuthContext);
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  const [mounted, setMounted] = useState(false);
+
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = async () => {
+    const db = firebase.firestore();
+    const querySnapshot = await db
+      .collection('users')
+      .where('accountType', '==', 'tenant')
+      .where('username', '>=', searchTerm)
+      .where('username', '<=', searchTerm + '\uf8ff')
+      .get();
+    const results = querySnapshot.docs.map((doc) => doc.data());
+    setSearchResults(results);
+  };
+
+
   const handleSubmit = () => {};
 
   return (
@@ -101,13 +132,17 @@ export default function AddTenantModal(props) {
                     Close
                   </button>
 
-                  <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    Save Changes
-                  </button>
+                  <input
+                  type="text"
+                  placeholder="Search by username"
+                   value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}/>
+                          <button onClick={handleSearch}>Search</button>
+                          <ul>
+  {searchResults.map((result) => (
+    <li key={result.uid}>{result.username}</li>
+  ))}
+</ul>
                 </div>
               </div>
             </div>
