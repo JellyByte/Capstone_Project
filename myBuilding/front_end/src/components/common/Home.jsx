@@ -104,7 +104,10 @@ export const Home = () => {
 
         <div className="w-full md:w-auto mt-4 md:mt-0 ml-0 md:ml-4">
           <div className="h-80 w-full overflow-auto border p-4 rounded-lg shadow-lg transition duration-300">
-            <div className="">Notifications</div>
+            <div className="font-bold text-center">
+              <p>Notifications</p>
+              <br />
+            </div>
 
             <div className="flex justify-between border-b border-gray-500 pb-2 mb-2">
               <button

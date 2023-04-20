@@ -39,18 +39,34 @@ const SignedLinks = () => {
         >
           Documents
         </NavLink>
-        <NavLink
+        {accountType === "landlord" && 
+          <NavLink
           to="/mylistings"
           className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
-        >
-          myListings
-        </NavLink>
+          >
+            My Listings
+          </NavLink>
+        
+        }
+        
+          
         <NavLink
           to="/profile"
           className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
         >
           profile
         </NavLink>
+        <NavLink
+          className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
+          onClick={() => {
+            signOut(auth).then(() => {
+              navigate("/");
+            });
+          }}
+          >
+          Logout
+        </NavLink>
+        
       </div>
 
       <button className="md:hidden" onClick={handleToggle}>
@@ -59,7 +75,9 @@ const SignedLinks = () => {
       <div className="relative" style={{ zIndex: 999 }}>
         {showMenu && (
           <div className="absolute right-0 mt-4 w-48 bg-white rounded-md shadow-lg opacity-90">
-            <div className="py-1">
+            <div className="py-1"
+              onClick={handleToggle}
+              >
               <NavLink
                 to="/profile"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100 hover:text-emerald-300"
