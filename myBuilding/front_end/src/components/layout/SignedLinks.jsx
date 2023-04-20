@@ -27,12 +27,17 @@ const SignedLinks = () => {
           {" "}
           Listings
         </NavLink>
-
+        <NavLink
+          to="/messaging"
+          className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
+        >
+          Messages
+        </NavLink>
         <NavLink
           to="/documents"
           className="text-emerald-300 text-base font-medium mr-4 hover:text-fuchsia-200"
         >
-          messages
+          Documents
         </NavLink>
         <NavLink
           to="/mylistings"
