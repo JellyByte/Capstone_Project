@@ -96,9 +96,13 @@ export const Home = () => {
 
   return (
     <div>
+
+      <h1 class="text-center text-5xl p-10 text-emerald-500">Welcome to myBuilding!</h1>
+      
       <div className="flex flex-col items-center justify-center md:flex-row md:justify-between">
+      
         <div>
-          <h1></h1>
+          
           <p id="p"></p>
         </div>
 
