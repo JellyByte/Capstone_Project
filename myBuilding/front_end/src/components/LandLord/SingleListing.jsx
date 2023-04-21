@@ -21,6 +21,7 @@ export const SingleListing = (props) => {
   const handleListingClick = () => {
     navigate(`${props.id}`);
   };
+  console.log(props.id);
 
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg border-2 border-gray-300 hover:shadow-xl transition-shadow duration-300">
