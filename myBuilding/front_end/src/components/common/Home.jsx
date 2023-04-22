@@ -130,14 +130,6 @@ export const Home = () => {
               >
                 Landlord Alerts
               </button>
-              <button
-                className={`px-4 py-2  ${
-                  activeTab === 3 ? "bg-red-500 text-white" : "bg-gray-300"
-                }`}
-                onClick={() => handleTabClick(3)}
-              >
-                Update
-              </button>
             </div>
             <div>
               {activeTab === 1 && (
@@ -148,7 +140,6 @@ export const Home = () => {
                   dangerouslySetInnerHTML={{ __html: privateNotification }}
                 ></p>
               )}
-              {activeTab === 3 && <p>Updates goes here.</p>}
             </div>
           </div>
         </div>
