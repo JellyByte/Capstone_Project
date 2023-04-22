@@ -99,11 +99,18 @@ export const Home = () => {
 
   return (
     <div>
+      <div class="flex justify-center items-center bg-gradient-to-b from-slate-200 to-white">
+        <div class="text-center relative z-10">
+          <h1 class="text-2xl md:text-4xl font-bold text-black my-4 md:my-8 px-4 py-6 md:px-4 md:py-8 rounded-lg shadow-lg bg-slate-100">
+            Welcome to <span class="text-gray-700">myBuilding</span>!
+          </h1>
+        </div>
+      </div>
+
       <div className="flex flex-col items-center justify-center md:flex-row md:justify-between">
-        <h1 class="text-center text-5xl font-bold text-emerald-500 my-8 bg-gradient-to-r from-emerald-400 via-emerald-500 to-green-500 bg-clip-text">
-          Welcome to{" "}
-          <span class="text-transparent bg-clip-text">myBuilding</span>!
-        </h1>
+        <div>
+          <p id="p"></p>
+        </div>
 
         <div className="w-full md:w-auto mt-4 md:mt-0 ml-0 md:ml-4">
           <div className="h-80 w-full overflow-auto border p-4 rounded-lg shadow-lg transition duration-300">
@@ -150,20 +157,6 @@ export const Home = () => {
           </div>
         </div>
         <div></div>
-      </div>
-
-      <div>
-        <p className="font-bold">Information</p>
-        <p>
-          MyBuilding is a tenant/landlord management app that allows tenants to
-          search for apartments and rent them out directly through the app.
-          Payment can also be made through the app. A built-in messaging system
-          allows for communication between tenants and their landlord, as well
-          as with other tenants in the building. Landlords can add apartments to
-          the app and send notifications, notices, and leases directly through
-          the app. The app also includes a documents section to hold all
-          important documents related to the lease and notices.
-        </p>
       </div>
     </div>
   );
