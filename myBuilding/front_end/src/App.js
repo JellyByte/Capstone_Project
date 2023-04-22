@@ -26,18 +26,19 @@ const App = () => {
   const { currentUser, accountType,setLoading} = useContext(AuthContext);
  
 
-    const LandLordRoute = ({ children, pn}) => {
- 
-     console.log(pn);
-     const nav = useNavigate();
-      if(accountType === "LandLord"){ 
-        nav(pn);   
-      }else{
+  const LandLordRoute = ({ children, pn }) => {
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+      if (accountType === "LandLord") {
+        navigate(pn);
+      } else {
         window.history.back();
       }
-      return children
-     
-    };
+    }, [accountType, navigate, pn]);
+  
+    return children;
+  };
 
 
     const ProtectedRoute = ({ children }) => {
@@ -72,8 +73,8 @@ const App = () => {
               <Route path="listings/:id" element={<ProtectedRoute> <ListingDetails /> </ProtectedRoute>} />
               <Route path="profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
-              <Route path="mylistings/" element={<ProtectedRoute> <LandLordRoute> <MyListings/> </LandLordRoute> </ProtectedRoute>} />
-              <Route path="mylistings/:id" element={<ProtectedRoute>  <LandLordListingDetails/>  </ProtectedRoute>} />
+              <Route path="mylistings/" element={ <LandLordRoute> <MyListings/> </LandLordRoute> } />
+              <Route path="mylistings/:id" element={<LandLordRoute>  <LandLordListingDetails/>  </LandLordRoute>} />
               
 
 

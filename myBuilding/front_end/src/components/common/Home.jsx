@@ -58,8 +58,6 @@ export const Home = () => {
         }
       });
 
-      
-
       notificationRef.forEach((element) => {
         if (element.id == landlord) {
           console.log(element.data().publicNotification);
@@ -69,7 +67,9 @@ export const Home = () => {
               currentUser.uid
             ) {
               privateContent =
-                element.data().privateNotification[i].text + "<br>" + privateContent;
+                element.data().privateNotification[i].text +
+                "<br>" +
+                privateContent;
               //timestamp = element.data().privateNotification[i].time
               //date = timestamp.getHours() + ":" + timestamp.getMinutes() + ", "+ timestamp.toDateString()
               //privateContent += date + "<br>"
@@ -77,7 +77,10 @@ export const Home = () => {
           }
 
           for (let i = 0; i < element.data().publicNotification.length; i++) {
-            publicContent = element.data().publicNotification[i].text + "<br>" + publicContent;
+            publicContent =
+              element.data().publicNotification[i].text +
+              "<br>" +
+              publicContent;
             //publicContent += element.data().publicNotification[i].time + "<br>";
           }
         }
@@ -96,15 +99,11 @@ export const Home = () => {
 
   return (
     <div>
-
-      <h1 class="text-center text-5xl p-10 text-emerald-500">Welcome to myBuilding!</h1>
-      
       <div className="flex flex-col items-center justify-center md:flex-row md:justify-between">
-      
-        <div>
-          
-          <p id="p"></p>
-        </div>
+        <h1 class="text-center text-5xl font-bold text-emerald-500 my-8 bg-gradient-to-r from-emerald-400 via-emerald-500 to-green-500 bg-clip-text">
+          Welcome to{" "}
+          <span class="text-transparent bg-clip-text">myBuilding</span>!
+        </h1>
 
         <div className="w-full md:w-auto mt-4 md:mt-0 ml-0 md:ml-4">
           <div className="h-80 w-full overflow-auto border p-4 rounded-lg shadow-lg transition duration-300">
