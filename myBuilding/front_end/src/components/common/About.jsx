@@ -1,4 +1,5 @@
 import React from 'react'
+import About_teams from './About_others';
 
 export const About = () => {
 
@@ -9,6 +10,15 @@ export const About = () => {
   return (
     <div className="bg-gray-100 py-8 px-4">
   <div className="max-w-7xl mx-auto">
+    <div className='justify-between border-b border-gray-500 pb-2 mb-2 '>
+      <a href="/about">
+        <button className='px-4 py-2 bg-emerald-500 text-white hover:text-fuchsia-200'>Home</button>
+      </a>
+      <a href='./about_others'>
+        <button className='px-4 py-2 bg-emerald-500 text-white hover:text-fuchsia-200'>See More</button>
+      </a>
+      
+    </div>
     <h1 className="text-4xl font-bold mb-4 text-center">Welcome to myBuilding</h1>
     <p className="text-lg leading-7 text-gray-500 mb-8">
       myBuilding is an innovative platform designed to simplify property management for both landlords and tenants. Our app allows tenants to easily browse through a wide range of listings, search by location, and communicate with other users through our messaging feature. For landlords, myBuilding offers an easy-to-use "Upload Listings" modal, which enables them to add, delete, and update their property listings in real-time. They can also add tenants to their account and send notifications and reminders to keep everyone informed.
@@ -39,8 +49,10 @@ export const About = () => {
       ></iframe>
     </div>
     <p className="text-sm leading-5 text-gray-500">
-  Our team at myBuilding, consisting of Vladyslav Yatsuta, Afreen Ahmad, and Joe Yeung, is dedicated to making property management easy and efficient for landlords and tenants alike.
+  
+  
 </p>
+
 
   </div>
 </div>

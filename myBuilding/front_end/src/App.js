@@ -1,6 +1,6 @@
 import {React,useState,useEffect,useRef} from 'react';
 import { Routes, Route, useLocation,useNavigate , Navigate,BrowserRouter as Router } from 'react-router-dom';
-import  {Home, About, Listings,Messages,SingleListing, Profile, SendNotifications, Documents} from './components'
+import  {Home, About, Listings,Messages,SingleListing, Profile, SendNotifications, Documents, About_teams, About_others} from './components'
 import NavBar from './components/layout/NavBar'
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -75,6 +75,7 @@ const App = () => {
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
               <Route path="mylistings/" element={ <LandLordRoute> <MyListings/> </LandLordRoute> } />
               <Route path="mylistings/:id" element={<LandLordRoute>  <LandLordListingDetails/>  </LandLordRoute>} />
+              <Route path = 'about_others' element={<About_others />}/>
               
 
 
