@@ -23,11 +23,16 @@ export const AuthContextProvider = ({ children }) => {
       
       setCurrentUser(user);
       if (user) {
+        try{
         console.log(user.photoURL)
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const accountType = userDoc.data().account_type;
         setAccountType(accountType);
         console.log(accountType)
+        }catch(e){
+          console.log(e)
+
+        }
       } else {
 
         setAccountType(null);

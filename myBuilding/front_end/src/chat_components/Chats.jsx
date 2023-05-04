@@ -14,7 +14,11 @@ export const Chats = () => {
   useEffect(() => {
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
-        setChats(doc.data());
+        try {
+          setChats(doc.data());
+        } catch (e) {
+          console.log(e);
+        }
       });
 
       return () => {
@@ -28,7 +32,11 @@ export const Chats = () => {
   console.log(Object.entries(chats));
 
   const handleSelect = (user) => {
-    dispatch({ type: "CHANGE_USER", payload: user });
+    try {
+      dispatch({ type: "CHANGE_USER", payload: user });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

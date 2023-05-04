@@ -6,6 +6,7 @@ import { auth, db, storage } from "../../firebase-config";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   setDoc,
   Timestamp,
@@ -23,11 +24,12 @@ export const Home = () => {
 
   const { currentUser, accountType } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState(1);
-  const [publicNotification, setPublicNotification] = useState("");
+  const [publicNotification, setPublicNotification] = useState();
   const [privateNotification, setPrivateNotification] = useState("");
 
   const handleTabClick = (tabNumber) => {
     setActiveTab(tabNumber);
+    getNotifications();
   };
 
   const handleLogout = () => {
@@ -43,59 +45,47 @@ export const Home = () => {
 
   const getNotifications = async () => {
     try {
-      const landlordRef = await getDocs(collection(db, "users"));
-      const notificationRef = await getDocs(collection(db, "notifications2"));
+      const docRef = doc(db, "users", currentUser.uid);
+      const docSnap = await getDoc(docRef);
+      let land_lord_id = null;
+      let publicNotifications = [];
+      //const [notificationList, setNotificationList] = useState(null);
+      if (docSnap.exists()) {
+        //console.log("Document data:", docSnap.data().land_lord_id);
+        //land_lord_id = docSnap.data().land_lord_id;
+        //console.log(docSnap.data());
+        land_lord_id = docSnap.data().land_lord_id;
+        //console.log(land_lord_id);
+      } else {
+        // docSnap.data() will be undefined in this case
+        console.log("No such document!");
+      }
+      const notifRef = doc(db, "notifications2", land_lord_id);
+      const notifRefSnap = await getDoc(notifRef);
+      if (notifRefSnap.exists()) {
+        console.log(notifRefSnap.data().privateNotification);
+        setPrivateNotification(notifRefSnap.data().privateNotification);
 
-      let landlord = "";
-      let publicContent = "";
-      let privateContent = "";
-      let date = "";
-      let timestamp = "";
+        setPublicNotification(notifRefSnap.data().publicNotification);
+      }
 
-      landlordRef.forEach((element) => {
-        if (element.id == currentUser.uid) {
-          landlord = element.data().land_lord_id;
-        }
-      });
-
-      notificationRef.forEach((element) => {
-        if (element.id == landlord) {
-          console.log(element.data().publicNotification);
-          for (let i = 0; i < element.data().privateNotification.length; i++) {
-            if (
-              element.data().privateNotification[i].tenant_id ===
-              currentUser.uid
-            ) {
-              privateContent =
-                element.data().privateNotification[i].text +
-                "<br>" +
-                privateContent;
-              //timestamp = element.data().privateNotification[i].time
-              //date = timestamp.getHours() + ":" + timestamp.getMinutes() + ", "+ timestamp.toDateString()
-              //privateContent += date + "<br>"
-            }
-          }
-
-          for (let i = 0; i < element.data().publicNotification.length; i++) {
-            publicContent =
-              element.data().publicNotification[i].text +
-              "<br>" +
-              publicContent;
-            //publicContent += element.data().publicNotification[i].time + "<br>";
-          }
-        }
-      });
-
-      setPublicNotification(publicContent);
-      setPrivateNotification(privateContent);
+      console.log(land_lord_id);
     } catch (e) {
-      console.log("landlord not found");
+      console.log(e);
     }
   };
 
+  if (publicNotification) {
+    console.log(publicNotification);
+    publicNotification.map((notif) => {
+      console.log(notif.text);
+    });
+  }
+
   useEffect(() => {
     getNotifications();
-  }, []);
+  }, [publicNotification]);
+  //console.log(publicNotification);
 
   return (
     <div>
@@ -137,14 +127,25 @@ export const Home = () => {
                 Landlord Alerts
               </button>
             </div>
+
             <div>
-              {activeTab === 1 && (
-                <p dangerouslySetInnerHTML={{ __html: publicNotification }}></p>
+              {activeTab === 1 &&
+              publicNotification &&
+              publicNotification.length > 0 ? (
+                publicNotification.map((notif) => {
+                  return <p>{notif.text}</p>;
+                })
+              ) : (
+                <p>No public notifications to display</p>
               )}
-              {activeTab === 2 && (
-                <p
-                  dangerouslySetInnerHTML={{ __html: privateNotification }}
-                ></p>
+              {activeTab === 2 &&
+              privateNotification &&
+              privateNotification.length > 0 ? (
+                privateNotification.map((notif) => {
+                  return <p>{notif.text}</p>;
+                })
+              ) : (
+                <p>No private notifications to display</p>
               )}
             </div>
           </div>
