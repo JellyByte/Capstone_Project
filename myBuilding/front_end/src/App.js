@@ -75,7 +75,8 @@ const App = () => {
               <Route path="documents" element={<ProtectedRoute> <Documents/> </ProtectedRoute>} />
               <Route path="mylistings/" element={ <LandLordRoute> <MyListings/> </LandLordRoute> } />
               <Route path="mylistings/:id" element={<LandLordRoute>  <LandLordListingDetails/>  </LandLordRoute>} />
-              <Route path = 'about_others' element={<About_others />}/>
+              <Route path = 'about_others/' element={<About_others />}/>
+              
               
 
 
